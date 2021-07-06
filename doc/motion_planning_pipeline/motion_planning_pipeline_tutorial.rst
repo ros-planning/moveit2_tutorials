@@ -1,8 +1,3 @@
-:moveit1:
-
-..
-   Once updated for MoveIt 2, remove all lines above title (including this comment and :moveit1: tag)
-
 Motion Planning Pipeline
 ==================================
 
@@ -22,15 +17,17 @@ Running the Code
 ----------------
 Open two shells. In the first shell start RViz and wait for everything to finish loading: ::
 
-  roslaunch panda_moveit_config demo.launch
+  ros2 launch moveit_resources_panda_moveit_config demo.launch.py
 
 In the second shell, run the launch file: ::
 
- roslaunch moveit_tutorials motion_planning_pipeline_tutorial.launch
+  ros2 launch moveit2_tutorials motion_planning_pipeline_tutorial.launch.py
 
-**Note:** This tutorial uses the **RvizVisualToolsGui** panel to step through the demo. To add this panel to RViz, follow the instructions in the `Visualization Tutorial <../quickstart_in_rviz/quickstart_in_rviz_tutorial.html#rviz-visual-tools>`_.
+**Note:** Because **MoveitVisualTools** has not been ported to ROS2 this tutoral has made use of xterm and a simple prompter to help the user progress through each demo step.
+To install xterm please run the following command: ::
 
-After a short moment, the RViz window should appear and look similar to the one at the top of this page. To progress through each demo step either press the **Next** button in the **RvizVisualToolsGui** panel at the bottom of the screen or select **Key Tool** in the **Tools** panel at the top of the screen and then press **N** on your keyboard while RViz is focused.
+  sudo apt-get install -y xterm
+
 
 Expected Output
 ---------------
@@ -48,4 +45,4 @@ The entire code can be seen :codedir:`here in the MoveIt GitHub project<motion_p
 
 The Launch File
 ---------------
-The entire launch file is :codedir:`here <motion_planning_pipeline/launch/motion_planning_pipeline_tutorial.launch>` on GitHub. All the code in this tutorial can be compiled and run from the moveit_tutorials package that you have as part of your MoveIt setup.
+The entire launch file is :codedir:`here <motion_planning_pipeline/launch/motion_planning_pipeline_tutorial.launch.py>` on GitHub. All the code in this tutorial can be compiled and run from the moveit_tutorials package that you have as part of your MoveIt setup.
