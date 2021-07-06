@@ -1,8 +1,3 @@
-:moveit1:
-
-..
-   Once updated for MoveIt 2, remove all lines above title (including this comment and :moveit1: tag)
-
 Subframes
 ============================
 
@@ -24,22 +19,31 @@ so you can do things like this:
 
 In this animation, the robot moves the tip of the cylinder to different positions on the box.
 
+Getting Started
+---------------
+If you haven't already done so, make sure you've completed the steps in `Getting Started <../getting_started/getting_started.html>`_.
+
+**Note:** This tutoral has made use of xterm and a simple prompter to help the user choose from each demo option.
+To install xterm please run the following command: ::
+
+   sudo apt-get install -y xterm
+
 Running The Demo
 ----------------
 After having completed the steps in `Getting Started <../getting_started/getting_started.html>`_, open two terminals. In the first terminal, execute this command to load up a panda, and wait for everything to finish loading: ::
 
-    roslaunch panda_moveit_config demo.launch
+   ros2 launch moveit_resources_panda_moveit_config demo.launch.py
 
 In the second terminal run the tutorial: ::
 
-    rosrun moveit_tutorials subframes_tutorial
+   ros2 launch moveit2_tutorials subframes_tutorial.launch.py
 
 In this terminal you should be able to enter numbers from 1-12 to send commands, and to see how the robot and the scene react.
 
 
 The Code
 ---------------
-The code for this example can be seen :codedir:`here <subframes>` in the moveit_tutorials GitHub project and is explained in detail below.
+The code for this example can be seen :codedir:`here <subframes>` in the moveit2_tutorials GitHub project and is explained in detail below.
 
 The code spawns a box and a cylinder in the planning scene, attaches the cylinder to the
 robot, and then lets you send motion commands via the command line. It also defines two
@@ -69,5 +73,5 @@ For older moveit_config packages that you have not generated yourself recently, 
 required for subframes might not be configured, and the subframe link might not be found. To fix this for your
 moveit_config package, open the ``ompl_planning_pipeline.launch`` file in the ``<robot_moveit_config>/launch``
 folder of your robot. For the Panda robot it is :panda_codedir:`this <launch/ompl_planning_pipeline.launch.xml>` file.
-Edit this launch file, find the lines where ``<arg name="planning_adapters">`` is mentioned and insert ``default_planner_request_adapters/ResolveConstraintFrames`` after
+Edit this launch file, find the lines where ``ompl_planning_pipeline_config`` is mentioned and insert ``default_planner_request_adapters/ResolveConstraintFrames`` after
 the line ``default_planner_request_adapters/FixStartStatePathConstraints``.

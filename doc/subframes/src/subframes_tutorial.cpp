@@ -35,7 +35,7 @@
 /* Author: Felix von Drigalski */
 
 // ROS
-#include <ros/ros.h>
+#include <rclcpp/rclcpp.hpp>
 
 // MoveIt
 #include <moveit/planning_scene_interface/planning_scene_interface.h>
@@ -46,12 +46,17 @@
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 #include <tf2_eigen/tf2_eigen.h>
 
+// All source files that use ROS logging should define a file-specific
+// static const rclcpp::Logger named LOGGER, located at the top of the file
+// and inside the namespace with the narrowest scope (if there is one)
+static const rclcpp::Logger LOGGER = rclcpp::get_logger("subframes_tutorial");
+
 // BEGIN_SUB_TUTORIAL plan1
 //
 // Creating the planning request
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 // In this tutorial, we use a small helper function to create our planning requests and move the robot.
-bool moveToCartPose(const geometry_msgs::PoseStamped& pose, moveit::planning_interface::MoveGroupInterface& group,
+bool moveToCartPose(const geometry_msgs::msg::PoseStamped& pose, moveit::planning_interface::MoveGroupInterface& group,
                     const std::string& end_effector_link)
 {
   // To use subframes of objects that are attached to the robot in planning, you need to set the end effector of your
@@ -70,13 +75,13 @@ bool moveToCartPose(const geometry_msgs::PoseStamped& pose, moveit::planning_int
 
   // The rest of the planning is done as usual. Naturally, you can also use the ``go()`` command instead of
   // ``plan()`` and ``execute()``.
-  ROS_INFO_STREAM("Planning motion to pose:");
-  ROS_INFO_STREAM(pose.pose.position.x << ", " << pose.pose.position.y << ", " << pose.pose.position.z);
+  RCLCPP_INFO_STREAM(LOGGER, "Planning motion to pose:");
+  RCLCPP_INFO_STREAM(LOGGER, pose.pose.position.x << ", " << pose.pose.position.y << ", " << pose.pose.position.z);
   moveit::planning_interface::MoveGroupInterface::Plan myplan;
   if (group.plan(myplan) && group.execute(myplan))
     return true;
 
-  ROS_WARN("Failed to perform motion.");
+  RCLCPP_WARN(LOGGER, "Failed to perform motion.");
   return false;
 }
 // END_SUB_TUTORIAL
@@ -95,7 +100,7 @@ void spawnCollisionObjects(moveit::planning_interface::PlanningSceneInterface& p
 
   // First, we start defining the `CollisionObject <http://docs.ros.org/api/moveit_msgs/html/msg/CollisionObject.html>`_
   // as usual.
-  moveit_msgs::CollisionObject box;
+  moveit_msgs::msg::CollisionObject box;
   box.id = "box";
   box.header.frame_id = "panda_hand";
   box.primitives.resize(1);
@@ -153,7 +158,7 @@ void spawnCollisionObjects(moveit::planning_interface::PlanningSceneInterface& p
   box.subframe_poses[4].orientation = tf2::toMsg(orientation);
 
   // Next, define the cylinder
-  moveit_msgs::CollisionObject cylinder;
+  moveit_msgs::msg::CollisionObject cylinder;
   cylinder.id = "cylinder";
   cylinder.header.frame_id = "panda_hand";
   cylinder.primitives.resize(1);
@@ -179,17 +184,17 @@ void spawnCollisionObjects(moveit::planning_interface::PlanningSceneInterface& p
 
   // BEGIN_SUB_TUTORIAL object2
   // Lastly, the objects are published to the PlanningScene. In this tutorial, we publish a box and a cylinder.
-  box.operation = moveit_msgs::CollisionObject::ADD;
-  cylinder.operation = moveit_msgs::CollisionObject::ADD;
+  box.operation = moveit_msgs::msg::CollisionObject::ADD;
+  cylinder.operation = moveit_msgs::msg::CollisionObject::ADD;
   planning_scene_interface.applyCollisionObjects({ box, cylinder });
 }
 // END_SUB_TUTORIAL
 
-void createArrowMarker(visualization_msgs::Marker& marker, const geometry_msgs::Pose& pose, const Eigen::Vector3d& dir,
-                       int id, double scale = 0.1)
+void createArrowMarker(visualization_msgs::msg::Marker& marker, const geometry_msgs::msg::Pose& pose,
+                       const Eigen::Vector3d& dir, int id, double scale = 0.1)
 {
-  marker.action = visualization_msgs::Marker::ADD;
-  marker.type = visualization_msgs::Marker::CYLINDER;
+  marker.action = visualization_msgs::msg::Marker::ADD;
+  marker.type = visualization_msgs::msg::Marker::CYLINDER;
   marker.id = id;
   marker.scale.x = 0.1 * scale;
   marker.scale.y = 0.1 * scale;
@@ -206,11 +211,11 @@ void createArrowMarker(visualization_msgs::Marker& marker, const geometry_msgs::
   marker.color.a = 1.0;
 }
 
-void createFrameMarkers(visualization_msgs::MarkerArray& markers, const geometry_msgs::PoseStamped& target,
+void createFrameMarkers(visualization_msgs::msg::MarkerArray& markers, const geometry_msgs::msg::PoseStamped& target,
                         const std::string& ns, bool locked = false)
 {
   int id = markers.markers.size();
-  visualization_msgs::Marker m;
+  visualization_msgs::msg::Marker m;
   m.header.frame_id = target.header.frame_id;
   m.ns = ns;
   m.frame_locked = locked;
@@ -228,38 +233,53 @@ void createFrameMarkers(visualization_msgs::MarkerArray& markers, const geometry
 
 int main(int argc, char** argv)
 {
-  ros::init(argc, argv, "panda_arm_subframes");
-  ros::NodeHandle nh;
-  ros::AsyncSpinner spinner(1);
-  spinner.start();
+  rclcpp::init(argc, argv);
+  rclcpp::NodeOptions node_options;
+  node_options.automatically_declare_parameters_from_overrides(true);
+  auto node = rclcpp::Node::make_shared("panda_arm_subframes", node_options);
+
+  // We spin up a SingleThreadedExecutor for the current state monitor to get information
+  // about the robot's state.
+  rclcpp::executors::SingleThreadedExecutor executor;
+  executor.add_node(node);
+  std::thread([&executor]() { executor.spin(); }).detach();
+
+  static const std::string PLANNING_GROUP = "panda_arm";
 
   moveit::planning_interface::PlanningSceneInterface planning_scene_interface;
-  moveit::planning_interface::MoveGroupInterface group("panda_arm");
+  moveit::planning_interface::MoveGroupInterface group(node, PLANNING_GROUP);
+
   group.setPlanningTime(10.0);
+  group.setMaxVelocityScalingFactor(0.05);
+  group.setMaxAccelerationScalingFactor(0.05);
 
   // BEGIN_SUB_TUTORIAL sceneprep
   // Preparing the scene
   // ^^^^^^^^^^^^^^^^^^^
   // In the main function, we first spawn the objects in the planning scene, then attach the cylinder to the robot.
   // Attaching the cylinder turns it purple in Rviz.
+
   spawnCollisionObjects(planning_scene_interface);
-  moveit_msgs::AttachedCollisionObject att_coll_object;
+  moveit_msgs::msg::AttachedCollisionObject att_coll_object;
   att_coll_object.object.id = "cylinder";
   att_coll_object.link_name = "panda_hand";
   att_coll_object.object.operation = att_coll_object.object.ADD;
-  ROS_INFO_STREAM("Attaching cylinder to robot.");
+  att_coll_object.touch_links = { "panda_rightfinger", "panda_leftfinger" };
+  RCLCPP_INFO_STREAM(LOGGER, "Attaching cylinder to robot.");
   planning_scene_interface.applyAttachedCollisionObject(att_coll_object);
+
   // END_SUB_TUTORIAL
 
   // Fetch the current planning scene state once
-  auto planning_scene_monitor = std::make_shared<planning_scene_monitor::PlanningSceneMonitor>("robot_description");
+  auto planning_scene_monitor =
+      std::make_shared<planning_scene_monitor::PlanningSceneMonitor>(node, "robot_description");
   planning_scene_monitor->requestPlanningSceneState();
   planning_scene_monitor::LockedPlanningSceneRO planning_scene(planning_scene_monitor);
 
   // Visualize frames as rviz markers
-  ros::Publisher marker_publisher = nh.advertise<visualization_msgs::MarkerArray>("visualization_marker_array", 10);
-  auto showFrames = [&](geometry_msgs::PoseStamped target, const std::string& eef) {
-    visualization_msgs::MarkerArray markers;
+  auto marker_publisher = node->create_publisher<visualization_msgs::msg::MarkerArray>("rviz_visual_tools", 10);
+  auto showFrames = [&](geometry_msgs::msg::PoseStamped target, const std::string& eef) {
+    visualization_msgs::msg::MarkerArray markers;
     // convert target pose into planning frame
     Eigen::Isometry3d tf;
     tf2::fromMsg(target.pose, tf);
@@ -273,12 +293,12 @@ int main(int argc, char** argv)
                              planning_scene->getFrameTransform(eef));
     createFrameMarkers(markers, target, "eef", true);
 
-    marker_publisher.publish(markers);
+    marker_publisher->publish(markers);
   };
 
   // Define a pose in the robot base.
   tf2::Quaternion target_orientation;
-  geometry_msgs::PoseStamped fixed_pose, target_pose;
+  geometry_msgs::msg::PoseStamped fixed_pose, target_pose;
   fixed_pose.header.frame_id = "panda_link0";
   fixed_pose.pose.position.y = -.4;
   fixed_pose.pose.position.z = .3;
@@ -287,28 +307,29 @@ int main(int argc, char** argv)
 
   // Set up a small command line interface to make the tutorial interactive.
   int character_input;
-  while (ros::ok())
+  while (rclcpp::ok())
   {
-    ROS_INFO("==========================\n"
-             "Press a key and hit Enter to execute an action. \n0 to exit"
-             "\n1 to move cylinder tip to box bottom \n2 to move cylinder tip to box top"
-             "\n3 to move cylinder tip to box corner 1 \n4 to move cylinder tip to box corner 2"
-             "\n5 to move cylinder tip to side of box"
-             "\n6 to return the robot to the start pose"
-             "\n7 to move the robot's wrist to a cartesian pose"
-             "\n8 to move cylinder/tip to the same cartesian pose"
-             "\n----------"
-             "\n10 to remove box and cylinder from the scene"
-             "\n11 to spawn box and cylinder"
-             "\n12 to attach the cylinder to the gripper\n");
+    RCLCPP_INFO(LOGGER, "==========================\n"
+                        "Press a key and hit Enter to execute an action. \n0 to exit"
+                        "\n1 to move cylinder tip to box bottom \n2 to move cylinder tip to box top"
+                        "\n3 to move cylinder tip to box corner 1 \n4 to move cylinder tip to box corner 2"
+                        "\n5 to move cylinder tip to side of box"
+                        "\n6 to return the robot to the start pose"
+                        "\n7 to move the robot's wrist to a cartesian pose"
+                        "\n8 to move cylinder/tip to the same cartesian pose"
+                        "\n----------"
+                        "\n10 to remove box and cylinder from the scene"
+                        "\n11 to spawn box and cylinder"
+                        "\n12 to attach the cylinder to the gripper\n");
     std::cin >> character_input;
+
     if (character_input == 0)
     {
-      return 0;
+      break;
     }
     else if (character_input == 1)
     {
-      ROS_INFO_STREAM("Moving to bottom of box with cylinder tip");
+      RCLCPP_INFO_STREAM(LOGGER, "Moving to bottom of box with cylinder tip");
 
       // BEGIN_SUB_TUTORIAL orientation
       // Setting the orientation
@@ -328,7 +349,7 @@ int main(int argc, char** argv)
     // The command "2" moves the cylinder tip to the top of the box (the right side in the top animation).
     else if (character_input == 2)
     {
-      ROS_INFO_STREAM("Moving to top of box with cylinder tip");
+      RCLCPP_INFO_STREAM(LOGGER, "Moving to top of box with cylinder tip");
       target_pose.header.frame_id = "box/top";
       target_orientation.setRPY(180.0 / 180.0 * M_PI, 0, 90.0 / 180.0 * M_PI);
       target_pose.pose.orientation = tf2::toMsg(target_orientation);
@@ -339,7 +360,7 @@ int main(int argc, char** argv)
     // END_SUB_TUTORIAL
     else if (character_input == 3)
     {
-      ROS_INFO_STREAM("Moving to corner1 of box with cylinder tip");
+      RCLCPP_INFO_STREAM(LOGGER, "Moving to corner1 of box with cylinder tip");
       target_pose.header.frame_id = "box/corner_1";
       target_orientation.setRPY(0, 180.0 / 180.0 * M_PI, 90.0 / 180.0 * M_PI);
       target_pose.pose.orientation = tf2::toMsg(target_orientation);
@@ -374,13 +395,13 @@ int main(int argc, char** argv)
     }
     else if (character_input == 7)
     {
-      ROS_INFO_STREAM("Moving to a pose with robot wrist");
+      RCLCPP_INFO_STREAM(LOGGER, "Moving to a pose with robot wrist");
       showFrames(fixed_pose, "panda_hand");
       moveToCartPose(fixed_pose, group, "panda_hand");
     }
     else if (character_input == 8)
     {
-      ROS_INFO_STREAM("Moving to a pose with cylinder tip");
+      RCLCPP_INFO_STREAM(LOGGER, "Moving to a pose with cylinder tip");
       showFrames(fixed_pose, "cylinder/tip");
       moveToCartPose(fixed_pose, group, "cylinder/tip");
     }
@@ -388,8 +409,8 @@ int main(int argc, char** argv)
     {
       try
       {
-        ROS_INFO_STREAM("Removing box and cylinder.");
-        moveit_msgs::AttachedCollisionObject att_coll_object;
+        RCLCPP_INFO_STREAM(LOGGER, "Removing box and cylinder.");
+        moveit_msgs::msg::AttachedCollisionObject att_coll_object;
         att_coll_object.object.id = "box";
         att_coll_object.object.operation = att_coll_object.object.REMOVE;
         planning_scene_interface.applyAttachedCollisionObject(att_coll_object);
@@ -398,40 +419,40 @@ int main(int argc, char** argv)
         att_coll_object.object.operation = att_coll_object.object.REMOVE;
         planning_scene_interface.applyAttachedCollisionObject(att_coll_object);
 
-        moveit_msgs::CollisionObject co1, co2;
+        moveit_msgs::msg::CollisionObject co1, co2;
         co1.id = "box";
-        co1.operation = moveit_msgs::CollisionObject::REMOVE;
+        co1.operation = moveit_msgs::msg::CollisionObject::REMOVE;
         co2.id = "cylinder";
-        co2.operation = moveit_msgs::CollisionObject::REMOVE;
+        co2.operation = moveit_msgs::msg::CollisionObject::REMOVE;
         planning_scene_interface.applyCollisionObjects({ co1, co2 });
       }
       catch (const std::exception& exc)
       {
-        ROS_WARN_STREAM(exc.what());
+        RCLCPP_WARN_STREAM(LOGGER, exc.what());
       }
     }
     else if (character_input == 11)
     {
-      ROS_INFO_STREAM("Respawning test box and cylinder.");
+      RCLCPP_INFO_STREAM(LOGGER, "Respawning test box and cylinder.");
       spawnCollisionObjects(planning_scene_interface);
     }
     else if (character_input == 12)
     {
-      moveit_msgs::AttachedCollisionObject att_coll_object;
+      moveit_msgs::msg::AttachedCollisionObject att_coll_object;
       att_coll_object.object.id = "cylinder";
       att_coll_object.link_name = "panda_hand";
       att_coll_object.object.operation = att_coll_object.object.ADD;
-      ROS_INFO_STREAM("Attaching cylinder to robot.");
+      RCLCPP_INFO_STREAM(LOGGER, "Attaching cylinder to robot.");
       planning_scene_interface.applyAttachedCollisionObject(att_coll_object);
     }
     else
     {
-      ROS_INFO("Could not read input. Quitting.");
+      RCLCPP_INFO(LOGGER, "Could not read input. Quitting.");
       break;
     }
   }
 
-  ros::waitForShutdown();
+  rclcpp::shutdown();
   return 0;
 }
 
