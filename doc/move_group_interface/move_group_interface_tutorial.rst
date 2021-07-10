@@ -12,7 +12,7 @@ Getting Started
 ---------------
 If you haven't already done so, make sure you've completed the steps in `Getting Started <../getting_started/getting_started.html>`_.
 
-**Note:** Because **RvizVisualTools** remote control feature has not been ported to ROS2 this tutoral has made use of xterm and a simple prompter to help the user progress through each demo step.
+**Note:** Because the **RvizVisualTools** remote control feature has not been ported to ROS2 this tutoral has made use of xterm and a simple prompter to help the user progress through each demo step.
 To install xterm please run the following command: ::
 
    sudo apt-get install -y xterm
