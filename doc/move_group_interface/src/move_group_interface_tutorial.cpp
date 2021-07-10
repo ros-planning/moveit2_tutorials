@@ -201,7 +201,10 @@ int main(int argc, char** argv)
 
   // Now, let's modify one of the joints, plan to the new joint space goal and visualize the plan.
   joint_group_positions[0] = -1.0;  // radians
-  move_group.setJointValueTarget(joint_group_positions);
+  bool within_bounds = move_group.setJointValueTarget(joint_group_positions);
+  if(!within_bounds) {
+    RCLCPP_WARN(LOGGER, "Target joint position(s) were outside of limits, but we will plan and clamp to the limits ");
+  }
 
   // We lower the allowed maximum velocity and acceleration to 5% of their maximum.
   // The default values are 10% (0.1).
