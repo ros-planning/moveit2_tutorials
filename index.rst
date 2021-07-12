@@ -92,6 +92,7 @@ Miscellaneous
 
    doc/joystick_control_teleoperation/joystick_control_teleoperation_tutorial
    doc/realtime_servo/realtime_servo_tutorial
+   doc/hybrid_planning/hybrid_planning_tutorial
    doc/benchmarking/benchmarking_tutorial
    doc/tests/tests_tutorial
 
