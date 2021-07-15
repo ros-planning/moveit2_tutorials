@@ -42,9 +42,10 @@ html_context = {
     "github_user": "ros-planning",
     "github_repo": "moveit2_tutorials",
     "github_version": "main",
-    "moveit1_user": "ros-planning",
+    "moveit_user": "ros-planning",
     "moveit1_repo": "moveit_tutorials",
     "moveit1_version": "master",
+    "moveit2_version": "main",
     "conf_py_path": "",
     "source_suffix": source_suffix,
     "css_files": ["_static/override.css"],
@@ -67,15 +68,23 @@ extlinks = {
     ),
     "moveit_codedir": (
         "https://github.com/"
-        + html_context["moveit1_user"]
+        + html_context["moveit_user"]
         + "/moveit/blob/"
         + html_context["moveit1_version"]
         + "/%s",
         "",
     ),
+    "moveit2_codedir": (
+        "https://github.com/"
+        + html_context["moveit_user"]
+        + "/moveit2/blob/"
+        + html_context["moveit2_version"]
+        + "/%s",
+        "",
+    ),
     "panda_codedir": (
         "https://github.com/"
-        + html_context["moveit1_user"]
+        + html_context["moveit_user"]
         + "/panda_moveit_config/blob/"
         + "melodic-devel"
         + "/%s",

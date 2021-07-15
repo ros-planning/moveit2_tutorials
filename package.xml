@@ -24,6 +24,7 @@
   <depend>moveit_ros_perception</depend>
   <depend>moveit_ros_planning_interface</depend>
   <depend>moveit_servo</depend>
+  <depend>moveit_hybrid_planning</depend>
   <!-- <depend>moveit_visual_tools</depend> -->
   <!-- <depend>pcl_conversions</depend> -->
   <!-- <depend>pcl_ros</depend> -->
