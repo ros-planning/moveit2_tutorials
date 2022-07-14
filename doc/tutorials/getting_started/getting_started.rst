@@ -38,14 +38,22 @@ Create A Colcon Workspace and Download Tutorials
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 For tutorials you will need to have a :ros_documentation:`colcon <Tutorials/Colcon-Tutorial.html#install-colcon>` workspace setup. ::
 
-  mkdir -p ~/ws_moveit2/src
+  mkdir -p ~/ws_moveit/src
 
 Download MoveIt 2 Tutorials Source
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Move into your colcon workspace and pull the MoveIt 2 tutorials source: ::
 
+<<<<<<< HEAD
   cd ~/ws_moveit2/src
   git clone -b galactic https://github.com/ros-planning/moveit2_tutorials.git
+=======
+  cd ~/ws_moveit/src
+  git clone https://github.com/ros-planning/moveit2_tutorials -b main
+
+Next we will download the source code for the rest of MoveIt: ::
+
+>>>>>>> 4c408fb (Bulk rename ws_moveit2 --> ws_moveit to conform to docker container directory naming (#411))
   vcs import < moveit2_tutorials/moveit2_tutorials.repos
 
 The import command may ask for your GitHub credentials. You can just press Enter until it moves on (ignore the "Authentication failed" error).
@@ -58,16 +66,16 @@ The following will install from Debian any package dependencies not already in y
 
 The next command will configure your colcon workspace: ::
 
-  cd ~/ws_moveit2
+  cd ~/ws_moveit
   colcon build --mixin release
 
 Source the colcon workspace: ::
 
-  source ~/ws_moveit2/install/setup.bash
+  source ~/ws_moveit/install/setup.bash
 
 Optional: add the previous command to your ``.bashrc``: ::
 
-   echo 'source ~/ws_moveit2/install/setup.bash' >> ~/.bashrc
+   echo 'source ~/ws_moveit/install/setup.bash' >> ~/.bashrc
 
 .. note:: Sourcing the ``setup.bash`` automatically in your ``~/.bashrc`` is
    not required and often skipped by advanced users who use more than one

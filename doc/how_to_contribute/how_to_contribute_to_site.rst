@@ -22,7 +22,7 @@ Steps
 
 1. Build and view the website locally
 
-  First, ``cd`` to the root directory of the moveit2_tutorials repo (if you followed the :doc:`Getting Started </doc/tutorials/getting_started/getting_started>` tutorial, this will be ``~/ws_moveit2/src/moveit2_tutorials``).  From that directory, run this command:
+  First, ``cd`` to the root directory of the moveit2_tutorials repo (if you followed the :doc:`Getting Started </doc/tutorials/getting_started/getting_started>` tutorial, this will be ``~/ws_moveit/src/moveit2_tutorials``).  From that directory, run this command:
 
   .. code-block:: bash
 
