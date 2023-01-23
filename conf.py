@@ -131,7 +131,7 @@ smv_branch_whitelist = r"^(main|humble|galactic|foxy)$"
 smv_released_pattern = r"^refs/(heads|remotes/[^/]+)/(foxy|galactic|humble).*$"
 smv_remote_whitelist = r"^(origin)$"
 smv_latest_version = "humble"
-smv_eol_versions = []
+smv_eol_versions = ["galactic"]
 
 distro_full_names = {
     "foxy": "Foxy Fitzroy",
