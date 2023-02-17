@@ -189,9 +189,9 @@ int main(int argc, char** argv)
   // the request and the response. We call the planner using this
   // planning context
   planning_interface::PlanningContextPtr context =
-      planner_instance->getPlanningContext(planning_scene, req, res.error_code_);
+      planner_instance->getPlanningContext(planning_scene, req, res.error_code);
   context->solve(res);
-  if (res.error_code_.val != res.error_code_.SUCCESS)
+  if (res.error_code.val != res.error_code.SUCCESS)
   {
     RCLCPP_ERROR(LOGGER, "Could not compute plan successfully");
     return 0;
@@ -239,11 +239,11 @@ int main(int argc, char** argv)
 
   // Call the planner and visualize the trajectory
   /* Re-construct the planning context */
-  context = planner_instance->getPlanningContext(planning_scene, req, res.error_code_);
+  context = planner_instance->getPlanningContext(planning_scene, req, res.error_code);
   /* Call the Planner */
   context->solve(res);
   /* Check that the planning was successful */
-  if (res.error_code_.val != res.error_code_.SUCCESS)
+  if (res.error_code.val != res.error_code.SUCCESS)
   {
     RCLCPP_ERROR(LOGGER, "Could not compute plan successfully");
     return 0;
@@ -273,7 +273,7 @@ int main(int argc, char** argv)
   /* Now, we go back to the first goal to prepare for orientation constrained planning */
   req.goal_constraints.clear();
   req.goal_constraints.push_back(pose_goal);
-  context = planner_instance->getPlanningContext(planning_scene, req, res.error_code_);
+  context = planner_instance->getPlanningContext(planning_scene, req, res.error_code);
   context->solve(res);
   res.getMessage(response);
 
@@ -328,7 +328,7 @@ int main(int argc, char** argv)
       req.workspace_parameters.max_corner.z = 2.0;
 
   // Call the planner and visualize all the plans created so far.
-  context = planner_instance->getPlanningContext(planning_scene, req, res.error_code_);
+  context = planner_instance->getPlanningContext(planning_scene, req, res.error_code);
   context->solve(res);
   res.getMessage(response);
   display_trajectory.trajectory.push_back(response.trajectory);

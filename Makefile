@@ -15,29 +15,23 @@ multiversion: Makefile
 
 multiversion-with-api: Makefile
 	@echo Building multiversion with API
-	@echo Step 1 of 5: Building multiversion
+	@echo Step 1 of 2: Clone MoveIt 2 and build API for all distros
+	for branch in main humble ; do \
+	  mkdir -p build/html/$$branch; cd build/html/$$branch && if cd moveit2; then git pull; else git clone https://github.com/ros-planning/moveit2 -b $$branch --depth 1 && cd moveit2; fi && \
+	  sed -i "s/HTML_EXTRA_STYLESHEET  =.*/HTML_EXTRA_STYLESHEET  = ..\/..\/..\/..\/theme.css/g" Doxyfile && DOXYGEN_OUTPUT_DIRECTORY="../api" doxygen && cd .. && rm -rf moveit2 ; cd ../../..; \
+	done
+	@echo Step 2 of 2: Building multiversion
 	sphinx-multiversion $(OPTS) "$(SOURCE)" build/html
 	@echo "<html><head><meta http-equiv=\"refresh\" content=\"0; url=humble/index.html\" /></head></html>" > build/html/index.html
-	@echo Step 2 of 5: Clone MoveIt 2 Rolling and build API
-	cd build/html/main && if cd moveit2; then git pull; else git clone https://github.com/ros-planning/moveit2 -b main && cd moveit2; fi && \
-		sed -i "s/HTML_EXTRA_STYLESHEET  =.*/HTML_EXTRA_STYLESHEET  = ..\/..\/..\/..\/theme.css/g" Doxyfile && DOXYGEN_OUTPUT_DIRECTORY="../api" doxygen && cd .. && rm -rf moveit2
-	@echo Step 3 of 5: Clone MoveIt 2 Humble and build API
-	cd build/html/humble && if cd moveit2; then git pull; else git clone https://github.com/ros-planning/moveit2 -b humble && cd moveit2; fi && \
-		sed -i "s/HTML_EXTRA_STYLESHEET  =.*/HTML_EXTRA_STYLESHEET  = ..\/..\/..\/..\/theme.css/g" Doxyfile && DOXYGEN_OUTPUT_DIRECTORY="../api" doxygen && cd .. && rm -rf moveit2
-	@echo Step 4 of 5: Clone MoveIt 2 Galactic and build API
-	cd build/html/galactic && if cd moveit2; then git pull; else git clone https://github.com/ros-planning/moveit2 -b galactic && cd moveit2; fi && \
-		sed -i "s/HTML_EXTRA_STYLESHEET  =.*/HTML_EXTRA_STYLESHEET  = ..\/..\/..\/..\/theme.css/g" Doxyfile && DOXYGEN_OUTPUT_DIRECTORY="../api" doxygen && cd .. && rm -rf moveit2
-	@echo Step 5 of 5: Clone MoveIt 2 Foxy and build API
-	cd build/html/foxy && if cd moveit2; then git pull; else git clone https://github.com/ros-planning/moveit2 -b foxy && cd moveit2; fi && \
-		sed -i "s/HTML_EXTRA_STYLESHEET  =.*/HTML_EXTRA_STYLESHEET  = ..\/..\/..\/..\/theme.css/g" Doxyfile && DOXYGEN_OUTPUT_DIRECTORY="../api" doxygen && cd .. && rm -rf moveit2
 
 local-with-api: Makefile
 	@echo Building local with API
-	@echo Step 1 of 2: Building multiversion
-	make html
-	@echo Step 2 of 2: Clone MoveIt 2 and build API using selected distro
-	cd build/html && if cd moveit2; then git pull; else git clone https://github.com/ros-planning/moveit2 -b $(MOVEIT_BRANCH) && cd moveit2; fi && \
+	@echo Step 1 of 2: Clone MoveIt 2 and build API using selected distro
+	mkdir -p build/html
+	cd build/html && if cd moveit2; then git pull; else git clone https://github.com/ros-planning/moveit2 -b $(MOVEIT_BRANCH) --depth 1 && cd moveit2; fi && \
 		sed -i "s/HTML_EXTRA_STYLESHEET  =.*/HTML_EXTRA_STYLESHEET  = ..\/..\/..\/theme.css/g" Doxyfile && DOXYGEN_OUTPUT_DIRECTORY="../api" doxygen &&  cd .. && rm -rf moveit2
+	@echo Step 2 of 2: Building html
+	make html
 
 .PHONY: help local-with-api Makefile multiversion multiversion-with-api
 

@@ -169,7 +169,7 @@ int main(int argc, char** argv)
   }
   /* Now, call the pipeline and check whether planning was successful. */
   /* Check that the planning was successful */
-  if (res.error_code_.val != res.error_code_.SUCCESS)
+  if (res.error_code.val != res.error_code.SUCCESS)
   {
     RCLCPP_ERROR(LOGGER, "Could not compute plan successfully");
     return 0;
@@ -220,7 +220,7 @@ int main(int argc, char** argv)
     planning_pipeline->generatePlan(lscene, req, res);
   }
   /* Check that the planning was successful */
-  if (res.error_code_.val != res.error_code_.SUCCESS)
+  if (res.error_code.val != res.error_code.SUCCESS)
   {
     RCLCPP_ERROR(LOGGER, "Could not compute plan successfully");
     return 0;
@@ -266,7 +266,7 @@ int main(int argc, char** argv)
     /* Now, call the pipeline and check whether planning was successful. */
     planning_pipeline->generatePlan(lscene, req, res);
   }
-  if (res.error_code_.val != res.error_code_.SUCCESS)
+  if (res.error_code.val != res.error_code.SUCCESS)
   {
     RCLCPP_ERROR(LOGGER, "Could not compute plan successfully");
     return 0;

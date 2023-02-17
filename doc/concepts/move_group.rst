@@ -2,9 +2,8 @@
 The ``move_group`` node
 =======================
 
-The figure below shows the high-level system architecture for a key node provided by MoveIt called `move_group <https://docs.ros.org/noetic/api/moveit_ros_move_group/html/move__group_8cpp.html>`_.
+The figure below shows the high-level system architecture for a key node provided by MoveIt called :cpp_api:`move_group <move_group::MoveGroupExe>`.
 This node serves as an integrator: pulling all the individual components together to provide a set of ROS actions and services for users to use.
-Note that moveit_commander is `not currently available in MoveIt 2 <https://github.com/ros-planning/moveit2/issues/314>`_.
 
 .. image:: /_static/images/move_group.png
 
@@ -13,7 +12,7 @@ User Interface
 
 The users can access the actions and services provided by ``move_group`` in two ways:
 
-- **In C++** - using the `move_group_interface <https://docs.ros.org/noetic/api/moveit_ros_planning_interface/html/classmoveit_1_1planning__interface_1_1MoveGroupInterface.html>`_ package that provides an easy to setup C++ interface to move_group
+- **In C++** - using the :cpp_api:`move_group_interface <moveit::planning_interface::MoveGroupInterface>` package that provides an easy to setup C++ interface to move_group
 
 - **Through a GUI** - using the :doc:`Motion Planning plugin to Rviz <../tutorials/quickstart_in_rviz/quickstart_in_rviz_tutorial>` (the ROS visualizer)
 

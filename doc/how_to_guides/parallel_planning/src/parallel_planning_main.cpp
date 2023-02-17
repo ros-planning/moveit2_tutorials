@@ -35,12 +35,12 @@ getShortestSolution(const std::vector<planning_interface::MotionPlanResponse>& s
   RCLCPP_INFO(LOGGER, "###################### Results ######################");
   for (auto const& solution : solutions)
   {
-    RCLCPP_INFO(LOGGER, "Planner '%s' returned '%s'", solution.planner_id_.c_str(),
-                moveit::core::error_code_to_string(solution.error_code_).c_str());
-    if (solution.trajectory_)
+    RCLCPP_INFO(LOGGER, "Planner '%s' returned '%s'", solution.planner_id.c_str(),
+                moveit::core::error_code_to_string(solution.error_code).c_str());
+    if (solution.trajectory)
     {
-      RCLCPP_INFO(LOGGER, "Path length: '%f', Planning time: '%f'",
-                  robot_trajectory::path_length(*solution.trajectory_), solution.planning_time_);
+      RCLCPP_INFO(LOGGER, "Path length: '%f', Planning time: '%f'", robot_trajectory::path_length(*solution.trajectory),
+                  solution.planning_time);
     }
   }
   // Find trajectory with minimal path
@@ -50,8 +50,8 @@ getShortestSolution(const std::vector<planning_interface::MotionPlanResponse>& s
                                                     // If both solutions were successful, check which path is shorter
                                                     if (solution_a && solution_b)
                                                     {
-                                                      return robot_trajectory::path_length(*solution_a.trajectory_) <
-                                                             robot_trajectory::path_length(*solution_b.trajectory_);
+                                                      return robot_trajectory::path_length(*solution_a.trajectory) <
+                                                             robot_trajectory::path_length(*solution_b.trajectory);
                                                     }
                                                     // If only solution a is successful, return a
                                                     else if (solution_a)
@@ -61,7 +61,7 @@ getShortestSolution(const std::vector<planning_interface::MotionPlanResponse>& s
                                                     // Else return solution b, either because it is successful or not
                                                     return false;
                                                   });
-  RCLCPP_INFO(LOGGER, "'%s' chosen as best solution (Shortest path)", shortest_solution->planner_id_.c_str());
+  RCLCPP_INFO(LOGGER, "'%s' chosen as best solution (Shortest path)", shortest_solution->planner_id.c_str());
   RCLCPP_INFO(LOGGER, "#####################################################");
   return *shortest_solution;
 }
@@ -238,12 +238,12 @@ public:
       auto robot_start_state = planning_component_->getStartState();
       auto joint_model_group_ptr = robot_model_ptr->getJointModelGroup(PLANNING_GROUP);
 
-      visual_tools_.publishTrajectoryLine(plan_solution.trajectory_, joint_model_group_ptr);
+      visual_tools_.publishTrajectoryLine(plan_solution.trajectory, joint_model_group_ptr);
       visual_tools_.trigger();
     }
 
     // Execute the trajectory and block until it's finished
-    moveit_cpp_->execute(plan_solution.trajectory_, true /* blocking*/, CONTROLLERS);
+    moveit_cpp_->execute(plan_solution.trajectory, true /* blocking*/, CONTROLLERS);
 
     // Start the next plan
     visual_tools_.prompt("Press 'next' in the RvizVisualToolsGui window to continue the demo");

@@ -71,7 +71,7 @@ int main(int argc, char* argv[])
     // Execute the plan
     if (success)
     {
-      draw_trajectory_tool_path(plan.trajectory_);
+      draw_trajectory_tool_path(plan.trajectory);
       moveit_visual_tools.trigger();
       prompt("Press 'Next' in the RVizVisualToolsGui window to execute");
       draw_title("Executing " + title);

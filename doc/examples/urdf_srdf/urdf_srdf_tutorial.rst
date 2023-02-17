@@ -100,7 +100,7 @@ For information about the syntax for the SRDF, read more details on the `ROS SRD
 
 Loading the URDF and SRDF
 -------------------------
-All the components of MoveIt that use the :moveit_core:`RobotModel` need to have access to the URDF and SRDF to function properly. In ROS 1, this was accomplished by loading the XML of each into a string parameter (``/robot_description`` and ``/robot_description_semantic`` respectively) into the global parameter server. ROS 2 does not have a global parameter server, so making sure all the appropriate nodes have access requires a little more work.
+All the components of MoveIt that use the :cpp_api:`RobotModel <moveit::core::RobotModel>` need to have access to the URDF and SRDF to function properly. In ROS 1, this was accomplished by loading the XML of each into a string parameter (``/robot_description`` and ``/robot_description_semantic`` respectively) into the global parameter server. ROS 2 does not have a global parameter server, so making sure all the appropriate nodes have access requires a little more work.
 
 Launch File Specification
 ^^^^^^^^^^^^^^^^^^^^^^^^^

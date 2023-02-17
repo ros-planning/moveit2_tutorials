@@ -38,10 +38,10 @@ fi
 
 # A fresh build is required because changes to some components such as css files does not rebuilt currently
 # See issue https://github.com/sphinx-doc/sphinx/issues/2090
-rm -rf build
+# rm -rf build
 
 # Build
-make html
+make local-with-api
 
 # Run
 xdg-open ./build/html/index.html &

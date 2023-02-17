@@ -13,8 +13,6 @@ The simplest way to use MoveIt through scripting is using the ``move_group_inter
    :maxdepth: 1
 
    move_group_interface/move_group_interface_tutorial
-   move_group_python_interface/move_group_python_interface_tutorial
-   moveit_commander_scripting/moveit_commander_scripting_tutorial
 
 Using MoveIt Directly Through the C++ API
 ------------------------------------------
