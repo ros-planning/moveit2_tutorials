@@ -9,6 +9,7 @@ on:
   push:
     branches:
       - main
+      - humble
 
 permissions:
   contents: read # to fetch code (actions/checkout)

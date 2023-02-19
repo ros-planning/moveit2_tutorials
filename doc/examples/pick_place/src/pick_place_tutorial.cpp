@@ -169,7 +169,7 @@ void place(moveit::planning_interface::MoveGroupInterface& group)
   place_location[0].pre_place_approach.min_distance = 0.095;
   place_location[0].pre_place_approach.desired_distance = 0.115;
 
-  // Setting post-grasp retreat
+  // Setting post-place retreat
   // ++++++++++++++++++++++++++
   /* Defined with respect to frame_id */
   place_location[0].post_place_retreat.direction.header.frame_id = "panda_link0";

@@ -71,6 +71,7 @@ pygments_style = "sphinx"
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 extensions = [
+    "sphinx.ext.autosectionlabel",
     "sphinxcontrib.doxylink",
     "sphinx.ext.extlinks",
     "tutorialformatter",
@@ -81,6 +82,8 @@ extensions = [
     "sphinx.ext.ifconfig",
     "sphinx_copybutton",
 ]
+
+autosectionlabel_prefix_document = True
 
 intersphinx_mapping = {
     "ros2": ("https://docs.ros.org/en/rolling/", None),

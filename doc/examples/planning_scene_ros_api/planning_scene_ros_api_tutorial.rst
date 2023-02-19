@@ -21,7 +21,7 @@ In the second shell, run the launch file for this demo: ::
 
   ros2 launch moveit2_tutorials planning_scene_ros_api_tutorial.launch.py
 
-After a short moment, the RViz window should appear and look similar to `Visualization Tutorial </doc/tutorials/quickstart_in_rviz/quickstart_in_rviz_tutorial.html#rviz-visual-tools>`_. To progress through each demo step either press the **Next** button in the **RvizVisualToolsGui** panel at the bottom of the screen or select **Key Tool** in the **Tools** panel at the top of the screen and then press **0** on your keyboard while RViz is focused.
+After a short moment, the RViz window should appear and look similar to this step in the :ref:`Visualization Tutorial <doc/tutorials/quickstart_in_rviz/quickstart_in_rviz_tutorial:Rviz Visual Tools>`. To progress through each demo step either press the **Next** button in the **RvizVisualToolsGui** panel at the bottom of the screen or select **Key Tool** in the **Tools** panel at the top of the screen and then press **0** on your keyboard while RViz is focused.
 
 Expected Output
 ---------------

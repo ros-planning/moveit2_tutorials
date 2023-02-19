@@ -16,7 +16,7 @@ The OMPL plugin contains the functionality to do that for a given set of constra
 In later instances the database can be loaded to use for constrained planning with any OMPL planner which strongly reduces planning time.
 
 This tutorial includes the steps on how to construct the constraint approximation database and on how to use it for constrained trajectory planning.
-For more information on how to plan with path constraints in general, take a look at `here </doc/examples/move_group_interface/move_group_interface_tutorial.html#planning-with-path-constraints>`_.
+For more information on how to plan with path constraints in general, take a look at the :ref:`Path Constraints Tutorial <doc/examples/move_group_interface/move_group_interface_tutorial:planning with path constraints>`.
 
 Creating the Constraint Database
 --------------------------------

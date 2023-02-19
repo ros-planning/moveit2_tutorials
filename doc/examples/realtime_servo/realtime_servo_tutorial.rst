@@ -40,8 +40,6 @@ If you do not have a joystick or game controller, you can still try the demo usi
 
 You will be able to use your keyboard to servo the robot. Send Cartesian commands with arrow keys and the :code:`.` and :code:`;` keys. Change the Cartesian command frame with :code:`W` for world and :code:`E` for End-Effector. Send joint jogging commands with keys 1-7 (use :code:`R` to reverse direction)
 
-Expected Output
----------------
 .. raw:: html
 
     <video width="700px" controls="true" autoplay="true" loop="true">
@@ -78,8 +76,6 @@ This basic C++ interface demo moves the robot in a predetermined way and can be 
 
 An Rviz window should appear with a Panda arm and collision object. The arm will joint-jog for a few seconds before switching to a Cartesian movement. As the arm approaches the collision object, it slows and stops.
 
-Expected Output
----------------
 .. raw:: html
 
     <video width="700px" controls="true" autoplay="true" loop="true">

@@ -203,8 +203,8 @@ int main(int argc, char** argv)
 
   // BEGIN_SUB_TUTORIAL CCD
   //
-  // Continuous Collision Detection
-  // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  // Running Continuous Collision Checks
+  // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   // For the CCD demonstration, the Panda robot is loaded again and with it a new planning scene created. Bullet is
   // again set as the active collision detector.
   robot_model::RobotModelPtr robot_model = moveit::core::loadTestingRobotModel("panda");
