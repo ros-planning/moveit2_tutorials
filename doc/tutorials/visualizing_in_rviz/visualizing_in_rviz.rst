@@ -184,7 +184,7 @@ Update your code for planning and executing to include these new features:
 
     // Execute the plan
     if (success) {
-      draw_trajectory_tool_path(plan.trajectory_);
+      draw_trajectory_tool_path(plan.trajectory);
       moveit_visual_tools.trigger();
       prompt("Press 'Next' in the RvizVisualToolsGui window to execute");
       draw_title("Executing");
