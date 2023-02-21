@@ -19,6 +19,11 @@ jobs:
       PUSH: ${{ (github.ref_name == 'main') }}
 
     steps:
+      - name: Checkout distro branch
+        if: ${{ matrix.ROS_DISTRO != 'rolling' }}
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ matrix.ROS_DISTRO }}
       - name: Set lower case for container name
         run: |
           echo "GH_IMAGE_LC=${GH_IMAGE,,}" >>${GITHUB_ENV}
@@ -31,12 +36,11 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build Tutorial Image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           file: .docker/Dockerfile
           build-args: |
                 ROS_DISTRO=${{ matrix.ROS_DISTRO }}
-                BASE_BRANCH=${{ env.BASE_IMAGE_BRANCH }}
           target: tutorial_image
           push: ${{ env.PUSH }}
           no-cache: false
