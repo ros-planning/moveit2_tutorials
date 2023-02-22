@@ -83,3 +83,4 @@ Further Reading
 
 - :doc:`how_to_write_tutorials`
 - :doc:`how_to_write_how_to_guides`
+- :doc:`how_to_cross_reference`

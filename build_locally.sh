@@ -1,5 +1,7 @@
 #!/bin/bash -eu
 
+export MOVEIT_BRANCH=main
+
 have_loop() {
   for arg in "$@"; do
     if [[ "${arg}" == "loop" ]]; then
@@ -33,6 +35,7 @@ fi
 
 # Install dependencies, unless argument says to skip
 if ! have_noinstall "$@"; then
+  sudo apt-get install -y doxygen graphviz
   pip3 install --user --upgrade -r requirements.txt
 fi
 

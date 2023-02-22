@@ -249,6 +249,7 @@ extlinks = {
 }
 # Only used for local build, multiversion overwrites this in the smv_rewrite_configs() function
 doxylink = {"cpp_api": ("build/html/api/MoveIt.tag", "api/html")}
+add_function_parentheses = True
 
 
 class RedirectFrom(Directive):
