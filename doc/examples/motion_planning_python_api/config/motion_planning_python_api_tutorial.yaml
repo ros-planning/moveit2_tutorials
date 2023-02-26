@@ -1,0 +1,53 @@
+planning_scene_monitor_options:
+  name: "planning_scene_monitor"
+  robot_description: "robot_description"
+  joint_state_topic: "/joint_states"
+  attached_collision_object_topic: "/moveit_cpp/planning_scene_monitor"
+  publish_planning_scene_topic: "/moveit_cpp/publish_planning_scene"
+  monitored_planning_scene_topic: "/moveit_cpp/monitored_planning_scene"
+  wait_for_initial_state_timeout: 10.0
+
+planning_pipelines:
+  pipeline_names: ["ompl", "pilz_industrial_motion_planner", "chomp", "ompl_rrt_star"]
+
+plan_request_params:
+  planning_attempts: 1
+  planning_pipeline: ompl
+  max_velocity_scaling_factor: 1.0
+  max_acceleration_scaling_factor: 1.0
+
+ompl_rrtc:  # Namespace for individual plan request
+  plan_request_params:  # PlanRequestParameters similar to the ones that are used by the single pipeline planning of moveit_cpp
+    planning_attempts: 1  # Number of attempts the planning pipeline tries to solve a given motion planning problem
+    planning_pipeline: ompl  # Name of the pipeline that is being used
+    planner_id: "RRTConnectkConfigDefault"  # Name of the specific planner to be used by the pipeline
+    max_velocity_scaling_factor: 1.0  # Velocity scaling parameter for the trajectory generation algorithm that is called (if configured) after the path planning
+    max_acceleration_scaling_factor: 1.0  # Acceleration scaling parameter for the trajectory generation algorithm that is called (if configured) after the path planning
+    planning_time: 0.5  # Time budget for the motion plan request. If the planning problem cannot be solved within this time, an empty solution with error code is returned
+
+pilz_lin:
+  plan_request_params:
+    planning_attempts: 1
+    planning_pipeline: pilz_industrial_motion_planner
+    planner_id: "PTP"
+    max_velocity_scaling_factor: 1.0
+    max_acceleration_scaling_factor: 1.0
+    planning_time: 0.8
+
+chomp:
+  plan_request_params:
+    planning_attempts: 1
+    planning_pipeline: chomp
+    max_velocity_scaling_factor: 1.0
+    max_acceleration_scaling_factor: 1.0
+    planning_time: 1.5
+
+# Second OMPL pipeline
+ompl_rrt_star:
+  plan_request_params:
+    planning_attempts: 1
+    planning_pipeline: ompl_rrt_star # Different OMPL pipeline name!
+    planner_id: "RRTstarkConfigDefault"
+    max_velocity_scaling_factor: 1.0
+    max_acceleration_scaling_factor: 1.0
+    planning_time: 1.5
