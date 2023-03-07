@@ -12,6 +12,9 @@ def generate_launch_description():
         MoveItConfigsBuilder("moveit_resources_panda")
         .robot_description(file_path="config/panda.urdf.xacro")
         .trajectory_execution(file_path="config/gripper_moveit_controllers.yaml")
+        .planning_pipelines(
+            pipelines=["ompl", "chomp", "pilz_industrial_motion_planner"]
+        )
         .to_moveit_configs()
     )
 
@@ -44,6 +47,7 @@ def generate_launch_description():
         parameters=[
             moveit_config.robot_description,
             moveit_config.robot_description_semantic,
+            moveit_config.robot_description_kinematics,
         ],
     )
 
