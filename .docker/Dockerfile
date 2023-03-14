@@ -19,7 +19,7 @@ RUN --mount=type=cache,target=/root/.ccache/ \
 
 ######################### Hello World Tutorial  #########################################
 
-#Create a new package using the command from the tutorial
+# Create a new package using the command from the tutorial
 RUN . "/opt/ros/${ROS_DISTRO}/setup.sh" &&\
     . "install/setup.sh" &&\
     cd "src" &&\
@@ -30,13 +30,13 @@ RUN . "/opt/ros/${ROS_DISTRO}/setup.sh" &&\
 
 ######################### Planning Around Objects  #######################################
 
-#Remove the hello_world tutorial cpp file and replace it with the planning_around_objects file
+# Remove the hello_world tutorial cpp file and replace it with the planning_around_objects file
 RUN rm src/hello_moveit/src/hello_moveit.cpp
 COPY ./doc/tutorials/planning_around_objects/hello_moveit.cpp src/hello_moveit/src/hello_moveit.cpp
 
 ######################### Pick and Place (MTC) Image  #########################################
 
-#Create a new package using the command from the tutorial
+# Create a new package using the command from the tutorial
 RUN . "/opt/ros/${ROS_DISTRO}/setup.sh" &&\
     . "install/setup.sh" &&\
     ros2 pkg create \
@@ -45,16 +45,16 @@ RUN . "/opt/ros/${ROS_DISTRO}/setup.sh" &&\
         --dependencies moveit_task_constructor_core rclcpp \
         --node-name mtc_node mtc_tutorial
 
-#Remove the empty cpp file and replace it with the example file
+# Remove the empty cpp file and replace it with the example file
 RUN rm src/mtc_tutorial/src/mtc_node.cpp
 COPY ./doc/tutorials/pick_and_place_with_moveit_task_constructor/src/mtc_node.cpp src/mtc_tutorial/src/mtc_node.cpp
 
-#Add the launch folder to the tutorial package and CMakeLists.txt
+# Add the launch folder to the tutorial package and CMakeLists.txt
 COPY ./doc/tutorials/pick_and_place_with_moveit_task_constructor/launch src/mtc_tutorial/launch
 
-#Add install(DIRECTORY launch  DESTINATION share/${PROJECT_NAME}) to CMakeLists.txt
-RUN   sed -i "s|ament_package()|install(DIRECTORY launch  DESTINATION share/\${PROJECT_NAME})\nament_package()|g" src/mtc_tutorial/CMakeLists.txt
-#Build the tutorials and set up the entrypoint/bashrc
+# Add install(DIRECTORY launch  DESTINATION share/${PROJECT_NAME}) to CMakeLists.txt
+RUN sed -i "s|ament_package()|install(DIRECTORY launch  DESTINATION share/\${PROJECT_NAME})\nament_package()|g" src/mtc_tutorial/CMakeLists.txt
+# Build the tutorials and set up the entrypoint/bashrc
 RUN --mount=type=cache,target=/root/.ccache/ \
     # Enable ccache
     . "/opt/ros/${ROS_DISTRO}/setup.sh" &&\
@@ -62,9 +62,10 @@ RUN --mount=type=cache,target=/root/.ccache/ \
     sudo apt update && rosdep install -r --from-paths src --ignore-src --rosdistro $ROS_DISTRO -y && \
     sudo apt install -y ros-${ROS_DISTRO}-rmw-cyclonedds-cpp && \
     colcon build \
-            --cmake-args -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=OFF -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
-            --ament-cmake-args -DCMAKE_BUILD_TYPE=Release \
-            --event-handlers desktop_notification- status- && \
+        --cmake-args -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=OFF -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+                     -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
+        --ament-cmake-args -DCMAKE_BUILD_TYPE=Release \
+        --event-handlers desktop_notification- status- && \
     ccache -s && \
     rm -rf /var/lib/apt/lists/* && \
     # Update /ros_entrypoint.sh to source our new workspace

@@ -1,0 +1,4 @@
+_scripts/
+_static/
+_templates/
+.docker/
