@@ -49,7 +49,7 @@ To start the first example, click the Next button.
 .. image:: RVizVisualTools.png
    :width: 700px
 
-The first example shows a plan with box constraints. A red and green sphere should appear in Rviz to show the start and goal states respectively. In addition, a grey box should appear that represents the position constraint on the link :code:`panda_link8`. If planning succeeds, you should see a preview of the trajectory that was planned. You can use the Trajectory Slider panel to inspect the trajectory.
+The first example shows a plan with box constraints. A red and green sphere should appear in RViz to show the start and goal states respectively. In addition, a grey box should appear that represents the position constraint on the link :code:`panda_link8`. If planning succeeds, you should see a preview of the trajectory that was planned. You can use the Trajectory Slider panel to inspect the trajectory.
 
 .. raw:: html
 
@@ -71,7 +71,7 @@ After pressing Next, the next planning problem is solved. This example uses equa
         OMPL constrained planning plane constraint example
     </video>
 
-Again, if planning succeeds, the trajectory is animated in Rviz. Press Next again to move on to the third planning problem, using equality constraints again to plan along a line.
+Again, if planning succeeds, the trajectory is animated in RViz. Press Next again to move on to the third planning problem, using equality constraints again to plan along a line.
 
 .. raw:: html
 
@@ -146,7 +146,7 @@ We start by using the lambda to create a target pose offset from the current pos
 
    auto target_pose = get_relative_pose(0.0, 0.3, -0.3);
 
-Now, we set up the constraints. A box is a ``PositionConstraint`` - see the full message definition ::moveit_msgs_codedir:`here <msg/PositionConstraint.msg>`. We set the ``frame_id`` in the header, as well as the ``link_name`` of the link to be constrained (in this case, the end effector). We then create a box using ``shape_msgs`` and set its dimensiions. We then place that box into ``box_constraint``.
+Now, we set up the constraints. A box is a ``PositionConstraint`` - see the full message definition ::moveit_msgs_codedir:`here <msg/PositionConstraint.msg>`. We set the ``frame_id`` in the header, as well as the ``link_name`` of the link to be constrained (in this case, the end effector). We then create a box using ``shape_msgs`` and set its dimensions. We then place that box into ``box_constraint``.
 
 .. code-block:: c++
 
@@ -176,7 +176,7 @@ Finally, we create a generic ``Constraints`` message and add our ``box_constrain
 .. code-block:: c++
 
    moveit_msgs::msg::Constraints box_constraints;
-   box_constraints.position_constraints.push_bemplace_backack(box_constraint);
+   box_constraints.position_constraints.emplace_back(box_constraint);
 
 Now that we've created our constraint, set the path constraints via the Move Group interface and plan. It's helpful to increase the default planning time, as planning with constraints can be slower.
 
@@ -306,7 +306,7 @@ Finally, we can set both a position and an orientation constraint. We will use t
 
      target_pose = get_relative_pose(-0.6, 0.1, 0);
 
-We will also reuse our orientation constraint - but this time, the original box constraint won't work as the target pose is outside of our original box. Let's modify the box pose and dimensions such that the goal pose is reachable. Be aware that having a both a position and orientation constraint can drastically shrink the reachable area - the target pose not only needs to be within the box constraint as mentioned, but needs to be reachable while satisfying the orientation constriant, which is more difficult to visualize.
+We will also reuse our orientation constraint - but this time, the original box constraint won't work as the target pose is outside of our original box. Let's modify the box pose and dimensions such that the goal pose is reachable. Be aware that having a both a position and orientation constraint can drastically shrink the reachable area - the target pose not only needs to be within the box constraint as mentioned, but needs to be reachable while satisfying the orientation constraint, which is more difficult to visualize.
 
 .. code-block:: c++
 
@@ -319,7 +319,7 @@ We will also reuse our orientation constraint - but this time, the original box 
   box_constraint.constraint_region.primitive_poses[0] = box_pose;
   box_constraint.weight = 1.0;
 
-As before, we create a generalized constraint message, this time adding both our position and orientation constrint.
+As before, we create a generalized constraint message, this time adding both our position and orientation constraint.
 
 .. code-block:: c++
 
