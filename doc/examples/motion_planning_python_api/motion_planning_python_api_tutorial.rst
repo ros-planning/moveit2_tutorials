@@ -5,7 +5,8 @@ Motion Planning Python API
 
         <iframe width="560" height="315" src="https://www.youtube.com/embed/7KvF7Dj7bz0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-In this tutorial we cover the basics of the motion planning API for ``moveit_py``. This tutorial is broken down into the following sections:
+In this tutorial we cover the basics of the motion planning API for ``moveit_py``.
+This tutorial is broken down into the following sections:
 
 * **Getting Started:** An outline of the tutorial setup requirements.
 * **Understanding Planning Parameters:** An outline of setting parameters for supported planners.
@@ -14,16 +15,17 @@ In this tutorial we cover the basics of the motion planning API for ``moveit_py`
 * **Single Pipeline Planning (Pose Goal):** Planning using a pose goal.
 * **Single Pipeline Planning (Custom Constraints):** Planning using custom constraints.
 * **Multi Pipeline Planning:** Running multiple planning pipelines in parallel.
+* **Using a Planning Scene:** Adding and removing collision objects and collision checking.
 
 :doc:`/doc/examples/moveit_cpp/moveitcpp_tutorial` and
 :doc:`/doc/examples/move_group_interface/move_group_interface_tutorial`
 
-The code for this tutorial can be found `here <https://github.com/peterdavidfagan/moveit2_tutorials/tree/moveit_py_motion_planning_python_api_tutorial/doc/examples/motion_planning_python_api>`_.
-
+The code for this tutorial can be found :codedir:`here in the moveit2_tutorials GitHub project<examples/motion_planning_python_api>`.
 
 Getting Started
 ==================================
-To complete this tutorial, you must have set up a workspace that includes MoveIt2 and its corresponding tutorials. An excellent outline on how to set up such a workspace is provided in the :doc:`Getting Started Guide </doc/tutorials/getting_started/getting_started>`, please consult this guide for further information.
+To complete this tutorial, you must have set up a workspace that includes MoveIt 2 and its corresponding tutorials.
+An outline on how to set up such a workspace is provided in the :doc:`Getting Started Guide </doc/tutorials/getting_started/getting_started>`, please consult this guide for further information.
 
 Once you have set up your workspace, you can execute the code for this tutorial by running the following command: ::
 
@@ -62,7 +64,7 @@ An example of such a configuration file is given below: ::
                         planner_id: "RRTConnectkConfigDefault"
                         max_velocity_scaling_factor: 1.0
                         max_acceleration_scaling_factor: 1.0
-                        planning_time: 0.5
+                        planning_time: 1.0
 
         ompl_rrt_star:
                 plan_request_params:
@@ -182,7 +184,9 @@ We start exploring the ``moveit_py`` motion planning API through executing a sin
 
 Single Pipeline Planning - Robot State
 ==================================================
-Next we will plan to a robot state, such a method is quite flexible as we can alter the robot state configuration as we wish (e.g. through setting joint values), here we will just set the robot state to a random configuration for simplicity. We will use the ``set_start_state_to_current_state`` method to set the start state of the robot to its current state and the ``set_goal`` method to set the goal state of the robot. We will then plan to the goal state and execute the plan: ::
+Next we will plan to a robot state.
+Such a method is quite flexible as we can alter the robot state configuration as we wish (e.g. through setting joint values), here we will just set the robot state to a random configuration for simplicity. We will use the ``set_start_state_to_current_state`` method to set the start state of the robot to its current state and the ``set_goal`` method to set the goal state of the robot.
+We will then plan to the goal state and execute the plan: ::
 
         # instantiate a RobotState instance using the current robot model
         robot_model = moveit.get_robot_model()
@@ -210,7 +214,8 @@ Next we will plan to a robot state, such a method is quite flexible as we can al
 
 Single Pipeline Planning - Pose Goal
 ==================================================
-Another common way to specify a goal state is via a pose goal ROS message. Here we demonstrate how to set a pose goal for the end effector of the robot: ::
+Another common way to specify a goal state is via a ROS message representing the pose goal.
+Here we demonstrate how to set a pose goal for the end effector of the robot: ::
 
         # set plan start state to current state
         panda_arm.set_start_state_to_current_state()
@@ -297,3 +302,73 @@ Here we will see how to plan in parallel with several of these pipelines : ::
         if plan_result:
                 logger.info("Executing plan")
                 panda_arm.execute()
+
+Using a Planning Scene
+===========================
+The code for this section requires you to run a different Python file, which you can specify as follows ::
+
+        ros2 launch moveit2_tutorials motion_planning_python_api_tutorial.launch.py example_file:=motion_planning_python_api_planning_scene.py
+
+Interacting with a planning scene requires you to create a planning scene monitor ::
+
+        panda = MoveItPy(node_name="moveit_py_planning_scene")
+        panda_arm = panda.get_planning_component("panda_arm")
+        planning_scene_monitor = panda.get_planning_scene_monitor()
+
+You can then add collision objects to a planning scene using the planning scene monitor's ``read_write`` context ::
+
+        with planning_scene_monitor.read_write() as scene:
+                collision_object = CollisionObject()
+                collision_object.header.frame_id = "panda_link0"
+                collision_object.id = "boxes"
+
+                box_pose = Pose()
+                box_pose.position.x = 0.15
+                box_pose.position.y = 0.1
+                box_pose.position.z = 0.6
+
+                box = SolidPrimitive()
+                box.type = SolidPrimitive.BOX
+                box.dimensions = dimensions
+
+                collision_object.primitives.append(box)
+                collision_object.primitive_poses.append(box_pose)
+                collision_object.operation = CollisionObject.ADD
+
+                scene.apply_collision_object(collision_object)
+                scene.current_state.update()  # Important to ensure the scene is updated
+
+Removing objects can be achieved similarly using the ``CollisionObject.REMOVE`` operation, or by removing all objects from the scene ::
+
+        with planning_scene_monitor.read_write() as scene:
+                scene.remove_all_collision_objects()
+                scene.current_state.update()
+
+You can also use the ``read_only`` context of a planning scene monitor for tasks that do not require modifying the scene, such as collision checking.
+For example ::
+
+        with planning_scene_monitor.read_only() as scene:
+                robot_state = scene.current_state
+                original_joint_positions = robot_state.get_joint_group_positions("panda_arm")
+
+                # Set the pose goal
+                pose_goal = Pose()
+                pose_goal.position.x = 0.25
+                pose_goal.position.y = 0.25
+                pose_goal.position.z = 0.5
+                pose_goal.orientation.w = 1.0
+
+                # Set the robot state and check collisions
+                robot_state.set_from_ik("panda_arm", pose_goal, "panda_hand")
+                robot_state.update()  # required to update transforms
+                robot_collision_status = scene.is_state_colliding(
+                        robot_state=robot_state, joint_model_group_name="panda_arm", verbose=True
+                )
+                logger.info(f"\nRobot is in collision: {robot_collision_status}\n")
+
+                # Restore the original state
+                robot_state.set_joint_group_positions(
+                        "panda_arm",
+                        original_joint_positions,
+                )
+                robot_state.update()  # required to update transforms

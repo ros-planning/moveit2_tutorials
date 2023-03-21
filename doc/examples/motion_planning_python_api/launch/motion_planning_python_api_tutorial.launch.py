@@ -2,10 +2,11 @@
 A launch file for running the motion planning python api tutorial
 """
 import os
-from launch import LaunchDescription
-from launch_ros.actions import Node, SetParameter
-from launch.actions import ExecuteProcess
 from ament_index_python.packages import get_package_share_directory
+from launch import LaunchDescription
+from launch_ros.actions import Node
+from launch.actions import DeclareLaunchArgument, ExecuteProcess
+from launch.substitutions import LaunchConfiguration
 from moveit_configs_utils import MoveItConfigsBuilder
 
 
@@ -23,17 +24,24 @@ def generate_launch_description():
         .to_moveit_configs()
     )
 
+    example_file = DeclareLaunchArgument(
+        "example_file",
+        default_value="motion_planning_python_api_tutorial.py",
+        description="Python API tutorial file name",
+    )
+
     moveit_py_node = Node(
         name="moveit_py",
         package="moveit2_tutorials",
-        executable="motion_planning_python_api_tutorial.py",
-        output="screen",
+        executable=LaunchConfiguration("example_file"),
+        output="both",
         parameters=[moveit_config.to_dict()],
     )
 
-    rviz_config_file = (
-        get_package_share_directory("moveit2_tutorials")
-        + "/config/motion_planning_python_api_tutorial.rviz"
+    rviz_config_file = os.path.join(
+        get_package_share_directory("moveit2_tutorials"),
+        "config",
+        "motion_planning_python_api_tutorial.rviz",
     )
 
     rviz_node = Node(
@@ -60,7 +68,7 @@ def generate_launch_description():
         package="robot_state_publisher",
         executable="robot_state_publisher",
         name="robot_state_publisher",
-        output="both",
+        output="log",
         parameters=[moveit_config.robot_description],
     )
 
@@ -73,7 +81,7 @@ def generate_launch_description():
         package="controller_manager",
         executable="ros2_control_node",
         parameters=[moveit_config.robot_description, ros2_controllers_path],
-        output="both",
+        output="log",
     )
 
     load_controllers = []
@@ -86,17 +94,18 @@ def generate_launch_description():
             ExecuteProcess(
                 cmd=["ros2 run controller_manager spawner {}".format(controller)],
                 shell=True,
-                output="screen",
+                output="log",
             )
         ]
 
     return LaunchDescription(
         [
-            static_tf,
-            robot_state_publisher,
-            rviz_node,
+            example_file,
             moveit_py_node,
+            robot_state_publisher,
             ros2_control_node,
+            rviz_node,
+            static_tf,
         ]
         + load_controllers
     )

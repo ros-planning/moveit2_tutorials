@@ -2,6 +2,9 @@
 """
 A script to outline the fundamentals of the moveit_py motion planning API.
 """
+
+import time
+
 # generic ros libraries
 import rclpy
 from rclpy.logging import get_logger
@@ -20,8 +23,9 @@ def plan_and_execute(
     logger,
     single_plan_parameters=None,
     multi_plan_parameters=None,
+    sleep_time=0.0,
 ):
-    """A helper function to plan and execute a motion."""
+    """Helper function to plan and execute a motion."""
     # plan to goal
     logger.info("Planning trajectory")
     if multi_plan_parameters is not None:
@@ -42,6 +46,8 @@ def plan_and_execute(
         robot.execute(robot_trajectory, blocking=True, controllers=[])
     else:
         logger.error("Planning failed")
+
+    time.sleep(sleep_time)
 
 
 def main():
@@ -68,7 +74,7 @@ def main():
     panda_arm.set_goal_state(configuration_name="extended")
 
     # plan to goal
-    plan_and_execute(panda, panda_arm, logger)
+    plan_and_execute(panda, panda_arm, logger, sleep_time=3.0)
 
     ###########################################################################
     # Plan 2 - set goal state with RobotState object
@@ -89,7 +95,7 @@ def main():
     panda_arm.set_goal_state(robot_state=robot_state)
 
     # plan to goal
-    plan_and_execute(panda, panda_arm, logger)
+    plan_and_execute(panda, panda_arm, logger, sleep_time=3.0)
 
     ###########################################################################
     # Plan 3 - set goal state with PoseStamped message
@@ -110,7 +116,7 @@ def main():
     panda_arm.set_goal_state(pose_stamped_msg=pose_goal, pose_link="panda_link8")
 
     # plan to goal
-    plan_and_execute(panda, panda_arm, logger)
+    plan_and_execute(panda, panda_arm, logger, sleep_time=3.0)
 
     ###########################################################################
     # Plan 4 - set goal state with constraints
@@ -142,7 +148,7 @@ def main():
     panda_arm.set_goal_state(motion_plan_constraints=[joint_constraint])
 
     # plan to goal
-    plan_and_execute(panda, panda_arm, logger)
+    plan_and_execute(panda, panda_arm, logger, sleep_time=3.0)
 
     ###########################################################################
     # Plan 5 - Planning with Multiple Pipelines simultaneously
@@ -165,6 +171,7 @@ def main():
         panda_arm,
         logger,
         multi_plan_parameters=multi_pipeline_plan_request_params,
+        sleep_time=3.0,
     )
 
 
