@@ -125,9 +125,6 @@ def main():
     # set plan start state to current state
     panda_arm.set_start_state_to_current_state()
 
-    # set plan start state to current state
-    panda_arm.set_start_state_to_current_state()
-
     # set constraints message
     from moveit.core.kinematic_constraints import construct_joint_constraint
 
