@@ -259,7 +259,7 @@ mtc::Task MTCTaskNode::createTask()
     auto stage_move_to_place = std::make_unique<mtc::stages::Connect>(
         "move to place",
         mtc::stages::Connect::GroupPlannerVector{ { arm_group_name, sampling_planner },
-                                                  { hand_group_name, sampling_planner } });
+                                                  { hand_group_name, interpolation_planner } });
     // clang-format on
     stage_move_to_place->setTimeout(5.0);
     stage_move_to_place->properties().configureInitFrom(mtc::Stage::PARENT);

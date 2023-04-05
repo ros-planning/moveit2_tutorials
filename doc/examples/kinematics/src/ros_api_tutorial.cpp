@@ -90,7 +90,7 @@ int main(int argc, char** argv)
   /* Filling in a seed state */
   robot_model_loader::RobotModelLoader robot_model_loader("robot_description");
   const moveit::core::RobotModelPtr& kinematic_model = robot_model_loader.getModel();
-  moveit::core::RobotStatePtr kinematic_state(new moveit::core::RobotState(kinematic_model));
+  moveit::core::RobotStatePtr robot_state(new moveit::core::RobotState(kinematic_model));
   const moveit::core::JointModelGroup* joint_model_group = kinematic_model->getJointModelGroup("panda_arm");
 
   /* Get the names of the joints in the panda_arm*/
@@ -98,9 +98,8 @@ int main(int argc, char** argv)
 
   /* Get the joint values and put them into the message, this is where you could put in your own set of values as
    * well.*/
-  kinematic_state->setToRandomPositions(joint_model_group);
-  kinematic_state->copyJointGroupPositions(joint_model_group,
-                                           service_request.ik_request.robot_state.joint_state.position);
+  robot_state->setToRandomPositions(joint_model_group);
+  robot_state->copyJointGroupPositions(joint_model_group, service_request.ik_request.robot_state.joint_state.position);
 
   /* Call the service again*/
   service_client.call(service_request, service_response);
@@ -120,8 +119,8 @@ int main(int argc, char** argv)
 
   /* Visualize the result*/
   moveit_msgs::DisplayRobotState msg;
-  kinematic_state->setVariableValues(service_response.solution.joint_state);
-  moveit::core::robotStateToRobotStateMsg(*kinematic_state, msg.state);
+  robot_state->setVariableValues(service_response.solution.joint_state);
+  moveit::core::robotStateToRobotStateMsg(*robot_state, msg.state);
   robot_state_publisher.publish(msg);
 
   // Sleep to let the message go through

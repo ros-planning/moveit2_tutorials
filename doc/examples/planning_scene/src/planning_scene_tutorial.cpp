@@ -13,9 +13,9 @@
 // setStateFeasibilityPredicate function. Here's a simple example of a
 // user-defined callback that checks whether the "panda_joint1" of
 // the Panda robot is at a positive or negative angle:
-bool stateFeasibilityTestExample(const moveit::core::RobotState& kinematic_state, bool /*verbose*/)
+bool stateFeasibilityTestExample(const moveit::core::RobotState& robot_state, bool /*verbose*/)
 {
-  const double* joint_values = kinematic_state.getJointPositions("panda_joint1");
+  const double* joint_values = robot_state.getJointPositions("panda_joint1");
   return (joint_values[0] > 0.0);
 }
 // END_SUB_TUTORIAL

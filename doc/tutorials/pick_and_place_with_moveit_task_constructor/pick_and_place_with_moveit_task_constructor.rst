@@ -789,7 +789,7 @@ Now that the stages that define the pick are complete, we move on to defining th
         auto stage_move_to_place = std::make_unique<mtc::stages::Connect>(
             "move to place",
             mtc::stages::Connect::GroupPlannerVector{ { arm_group_name, sampling_planner },
-                                                      { hand_group_name, sampling_planner } });
+                                                      { hand_group_name, interpolation_planner } });
         stage_move_to_place->setTimeout(5.0);
         stage_move_to_place->properties().configureInitFrom(mtc::Stage::PARENT);
         task.add(std::move(stage_move_to_place));
