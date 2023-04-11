@@ -74,9 +74,9 @@ public:
     : node_{ node }
     , moveit_cpp_{ std::make_shared<moveit_cpp::MoveItCpp>(node) }
     , planning_component_{ std::make_shared<moveit_cpp::PlanningComponent>(PLANNING_GROUP, moveit_cpp_) }
-    , visual_tools_(node, "panda_link0", "parallel_planning_example", moveit_cpp_->getPlanningSceneMonitor())
+    , visual_tools_(node, "panda_link0", "parallel_planning_example", moveit_cpp_->getPlanningSceneMonitorNonConst())
   {
-    moveit_cpp_->getPlanningSceneMonitor()->providePlanningSceneService();
+    moveit_cpp_->getPlanningSceneMonitorNonConst()->providePlanningSceneService();
 
     visual_tools_.deleteAllMarkers();
     visual_tools_.loadRemoteControl();
@@ -161,7 +161,7 @@ public:
 
     // Add object to planning scene
     {  // Lock PlanningScene
-      planning_scene_monitor::LockedPlanningSceneRW scene(moveit_cpp_->getPlanningSceneMonitor());
+      planning_scene_monitor::LockedPlanningSceneRW scene(moveit_cpp_->getPlanningSceneMonitorNonConst());
       scene->processPlanningSceneWorldMsg(scene_msg.world);
     }  // Unlock PlanningScene
 
