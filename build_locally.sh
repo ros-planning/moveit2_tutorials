@@ -1,6 +1,11 @@
 #!/bin/bash -eu
-
 export MOVEIT_BRANCH=main
+export ROS_DISTRO=rolling
+python_version=$(python --version 2>&1 | tr -d ' ' | tr '[:upper:]' '[:lower:]' | sed 's/\.[0-9]*$//')
+
+# path variables required to build Python API documentation
+export PYTHONPATH=/opt/ros/$ROS_DISTRO/lib/$python_version/site-packages:/opt/ros/$ROS_DISTRO/local/lib/$python_version/dist-packages
+export LD_LIBRARY_PATH=/opt/ros/$ROS_DISTRO/lib
 
 have_loop() {
   for arg in "$@"; do

@@ -40,8 +40,9 @@ grep -rl 'https:\/\/moveit.picknik.ai\/rolling\/' ./build/ | \
  xargs sed -i "s|https://moveit.picknik.ai/rolling/|file://$PWD|g"
 
 # Run HTML tests on generated build output to check for 404 errors, etc
+# 429 or 403 - happens when GitHub rate-limits requests
 htmlproofer ./build \
-  --only-4xx --check-html --http-status-ignore "429" \
+  --only-4xx --check-html --http-status-ignore "429" --http-status-ignore "403" \
   --file-ignore ./build/html/genindex.html,./build/html/search.html,/html/api/ \
   --alt-ignore '/.*/' --url-ignore '#'
 

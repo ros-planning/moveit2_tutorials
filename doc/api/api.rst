@@ -1,6 +1,7 @@
 API Documentation
 =================
+.. toctree::
+   :maxdepth: 1
 
-.. raw:: html
-
-    <meta http-equiv="Refresh" content="0; url='../../api/html/index.html" />
+   cpp_api/api
+   python_api/api
