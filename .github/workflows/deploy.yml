@@ -135,8 +135,12 @@ jobs:
     - name: Create CNAME file
       run: echo "moveit.picknik.ai" > build/html/CNAME
 
+    # TODO(henningkayser): fix hack for using python api artifact in multiversion
     - name: Build multiversion
-      run: make multiversion
+      run: |
+        cp build/html/main/doc/api/python_api/api.html .   # backup artifact html
+        make multiversion
+        cp -f api.html build/html/main/doc/api/python_api/ # restore artifact html
 
     - name: Upload pages artifact
       uses: actions/upload-pages-artifact@v1
