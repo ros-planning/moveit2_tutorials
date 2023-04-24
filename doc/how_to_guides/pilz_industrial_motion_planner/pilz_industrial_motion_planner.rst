@@ -275,7 +275,7 @@ you can interact with the planner through the RViz MotionPlanning panel.
    :alt: rviz figure
 
 To use the planner through the MoveGroup Interface, refer to
-:codedir:`the MoveGroup Interface C++ example <examples/pilz_industrial_motion_planner/src/pilz_move_group.cpp>`.
+:codedir:`the MoveGroup Interface C++ example <how_to_guides/pilz_industrial_motion_planner/src/pilz_move_group.cpp>`.
 To run this, execute the following commands in separate Terminals:
 
 ::
@@ -285,7 +285,7 @@ To run this, execute the following commands in separate Terminals:
 
 
 To use the planner using MoveIt Task Constructor, refer to
-:codedir:`the MoveIt Task Constructor C++ example <examples/pilz_industrial_motion_planner/src/pilz_mtc.cpp>`.
+:codedir:`the MoveIt Task Constructor C++ example <how_to_guides/pilz_industrial_motion_planner/src/pilz_mtc.cpp>`.
 To run this, execute the following commands in separate Terminals:
 
 ::
@@ -340,7 +340,7 @@ To verify the limits were set correctly, you can check the parameters for your
 
 
 Sequence of multiple segments
-=============================
+-----------------------------
 
 To concatenate multiple trajectories and plan the trajectory at once,
 you can use the sequence capability. This reduces the planning overhead
@@ -354,7 +354,7 @@ non of the commands in the sequence are executed.
 multiple groups (e.g. "Manipulator", "Gripper")
 
 User interface sequence capability
-----------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 A specialized MoveIt functionality known as the
 :moveit_codedir:`command list manager<moveit_planners/pilz_industrial_motion_planner/include/pilz_industrial_motion_planner/command_list_manager.h>`
@@ -397,7 +397,7 @@ constraints of an individual ``moveit_msgs::msg::MotionPlanRequest`` are
 already satisfied but the ``MoveGroupSequenceAction`` capability doesn't
 implement such a check to allow moving on a circular or comparable path.
 
-See the ``pilz_robot_programming`` package for an `ROS1 python script
+See the ``pilz_robot_programming`` package for a `ROS 1 Python script
 <https://github.com/PilzDE/pilz_industrial_motion/blob/melodic-devel/pilz_robot_programming/examples/demo_program.py>`_
 that shows how to use the capability.
 

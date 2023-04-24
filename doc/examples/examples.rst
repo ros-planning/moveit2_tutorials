@@ -75,9 +75,7 @@ Configuration
    chomp_planner/chomp_planner_tutorial
    stomp_planner/stomp_planner_tutorial
    trajopt_planner/trajopt_planner_tutorial
-   pilz_industrial_motion_planner/pilz_industrial_motion_planner
-   planning_adapters/planning_adapters_tutorial.rst
-   persistent_scenes_and_states/persistent_scenes_and_states
+   planning_adapters/planning_adapters_tutorial
 
 Miscellaneous
 ----------------------------
