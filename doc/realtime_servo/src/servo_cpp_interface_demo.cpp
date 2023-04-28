@@ -66,7 +66,7 @@ size_t count_ = 0;
 void publishCommands()
 {
   // First we will publish 100 joint jogging commands. The :code:`joint_names` field allows you to specify individual
-  // joints to move, at the velocity in the cooresponding :code:`velocities` field. It is important that the message
+  // joints to move, at the velocity in the corresponding :code:`velocities` field. It is important that the message
   // contains a recent timestamp, or Servo will think the command is stale and will not move the robot.
   if (count_ < 100)
   {
@@ -163,7 +163,7 @@ int main(int argc, char** argv)
 
   // Initializing Servo
   // ^^^^^^^^^^^^^^^^^^
-  // Servo requires a number of parameters to dictate its behavoir. These can be read automatically by using the
+  // Servo requires a number of parameters to dictate its behavior. These can be read automatically by using the
   // :code:`makeServoParameters` helper function
   auto servo_parameters = moveit_servo::ServoParameters::makeServoParameters(node_, LOGGER);
   if (!servo_parameters)

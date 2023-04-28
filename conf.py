@@ -217,12 +217,21 @@ extlinks = {
         + "/%s",
         "",
     ),  # TODO(dlu): use ros_distro when noetic-devel branch is available
+<<<<<<< HEAD
     # NEED DOCS.ROS.ORG equivelent for foxy
     "ros_documentation": (
         f"https://docs.ros.org/{lang}/{ros_distro}/%s",
         "",
     ),
     "rosdocs": ("http://docs.ros.org/" + ros_distro + "/api/%s", ""),
+=======
+    # NEED DOCS.ROS.ORG equivalent for foxy
+    "ros_documentation": (
+        f"https://docs.ros.org/{lang}/{ros_distro}/%s",
+        "",
+    ),
+    "rosdocs": ("http://docs.ros.org/" + ros1_distro + "/api/%s", ""),
+>>>>>>> 93e1ef8 (Add codespell to .precommit and fix spelling errors (#244))
     "moveit_core": (
         "http://docs.ros.org/"
         + ros_distro

@@ -49,7 +49,7 @@ Note that the controller overlay here is just for demonstration purposes and is 
 
 Using the C++ Interface
 -----------------------
-Instead of launching Servo as its own component, you can include Servo in your own nodes via the C++ interface. Sending commands to the robot is very similiar in both cases, but for the C++ interface a little bit of setup for Servo is necessary. In exchange, you will be able to directly interact with Servo through its C++ API.
+Instead of launching Servo as its own component, you can include Servo in your own nodes via the C++ interface. Sending commands to the robot is very similar in both cases, but for the C++ interface a little bit of setup for Servo is necessary. In exchange, you will be able to directly interact with Servo through its C++ API.
 
 This basic C++ interface demo moves the robot in a predetermined way and can be launched with ::
 

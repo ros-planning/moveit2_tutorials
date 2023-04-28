@@ -69,8 +69,13 @@ int main(int argc, char** argv)
   // ^^^^^
   //
   // MoveIt operates on sets of joints called "planning groups" and stores them in an object called
+<<<<<<< HEAD
   // the *JointModelGroup*. Throughout MoveIt, the terms "planning group" and "joint model group"
   // are used interchangably.
+=======
+  // the ``JointModelGroup``. Throughout MoveIt, the terms "planning group" and "joint model group"
+  // are used interchangeably.
+>>>>>>> 93e1ef8 (Add codespell to .precommit and fix spelling errors (#244))
   static const std::string PLANNING_GROUP = "panda_arm";
 
   // The
@@ -309,7 +314,7 @@ int main(int argc, char** argv)
   const double jump_threshold = 0.0;
   const double eef_step = 0.01;
   double fraction = move_group.computeCartesianPath(waypoints, eef_step, jump_threshold, trajectory);
-  RCLCPP_INFO(LOGGER, "Visualizing plan 4 (Cartesian path) (%.2f%% acheived)", fraction * 100.0);
+  RCLCPP_INFO(LOGGER, "Visualizing plan 4 (Cartesian path) (%.2f%% achieved)", fraction * 100.0);
 
   // Visualize the plan in RViz
   visual_tools.deleteAllMarkers();
@@ -490,7 +495,7 @@ int main(int argc, char** argv)
   visual_tools.trigger();
 
   /* Wait for MoveGroup to receive and process the attached collision object message */
-  visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to once the collision object disapears");
+  visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to once the collision object disappears");
 
   // END_TUTORIAL
   visual_tools.deleteAllMarkers();

@@ -57,7 +57,7 @@ int main(int argc, char** argv)
   // Visualization
   // ^^^^^^^^^^^^^
   //
-  // The package MoveItVisualTools provides many capabilties for visualizing objects, robots,
+  // The package MoveItVisualTools provides many capabilities for visualizing objects, robots,
   // and trajectories in RViz as well as debugging tools such as step-by-step introspection of a script
   moveit_visual_tools::MoveItVisualTools visual_tools(node, "panda_link0", "moveit_cpp_tutorial",
                                                       moveit_cpp_ptr->getPlanningSceneMonitor());
