@@ -41,8 +41,8 @@
 // ROS
 #include <rclcpp/rclcpp.hpp>
 
-// Servo
-#include <moveit_servo/servo_parameters.h>
+// Auto-generated
+#include <moveit_servo_lib_parameters.hpp>
 #include <moveit_servo/servo.h>
 #include <moveit/planning_scene_monitor/planning_scene_monitor.h>
 
@@ -166,21 +166,14 @@ int main(int argc, char** argv)
 
   // Initializing Servo
   // ^^^^^^^^^^^^^^^^^^
-  // Servo requires a number of parameters to dictate its behavior. These can be read automatically by using the
-  // :code:`makeServoParameters` helper function
-  auto servo_parameters = moveit_servo::ServoParameters::makeServoParameters(node_);
-  if (!servo_parameters)
-  {
-    RCLCPP_FATAL(LOGGER, "Failed to load the servo parameters");
-    return EXIT_FAILURE;
-  }
+  auto servo_param_listener = std::make_unique<const servo::ParamListener>(node_);
 
   // Initialize the Servo C++ interface by passing a pointer to the node, the parameters, and the PSM
-  auto servo = std::make_unique<moveit_servo::Servo>(node_, servo_parameters, planning_scene_monitor);
+  moveit_servo::Servo servo(node_, planning_scene_monitor, std::move(servo_param_listener));
 
   // You can start Servo directly using the C++ interface. If launched using the alternative ServoNode, a ROS
   // service is used to start Servo. Before it is started, MoveIt Servo will not accept any commands or move the robot
-  servo->start();
+  servo.start();
 
   // Sending Commands
   // ^^^^^^^^^^^^^^^^

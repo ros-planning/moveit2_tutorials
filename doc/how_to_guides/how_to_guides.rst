@@ -11,6 +11,7 @@ Configuring and Using MoveIt
 .. toctree::
    :maxdepth: 1
 
+   kinematics_cost_function/kinematics_cost_function_tutorial
    moveit_configuration/moveit_configuration_tutorial
    pilz_industrial_motion_planner/pilz_industrial_motion_planner
    using_ompl_constrained_planning/ompl_constrained_planning
