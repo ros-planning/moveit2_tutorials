@@ -243,7 +243,7 @@ public:
     }
 
     // Execute the trajectory and block until it's finished
-    moveit_cpp_->execute(plan_solution.trajectory, true /* blocking*/, CONTROLLERS);
+    moveit_cpp_->execute(plan_solution.trajectory, CONTROLLERS);
 
     // Start the next plan
     visual_tools_.prompt("Press 'next' in the RvizVisualToolsGui window to continue the demo");
