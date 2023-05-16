@@ -14,6 +14,7 @@ Configuring and Using MoveIt
    kinematics_cost_function/kinematics_cost_function_tutorial
    moveit_configuration/moveit_configuration_tutorial
    pilz_industrial_motion_planner/pilz_industrial_motion_planner
+   stomp_planner/stomp_planner
    using_ompl_constrained_planning/ompl_constrained_planning
    parallel_planning/parallel_planning_tutorial
    controller_teleoperation/controller_teleoperation
