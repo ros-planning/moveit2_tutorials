@@ -30,3 +30,4 @@ Developing and Documenting MoveIt
    how_to_generate_api_doxygen_locally
    how_to_setup_docker_containers_in_ubuntu
    how_to_write_doxygen
+   isaac_panda/isaac_panda_tutorial

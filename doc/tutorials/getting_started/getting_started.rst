@@ -7,10 +7,17 @@ Building all the source code of MoveIt can take 20-30 minutes, depending on the 
 
 Install ROS 2 and Colcon
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-:ros_documentation:`Install ROS 2 {DISTRO_TITLE}<Installation.html>`.
-It is easy to miss steps when going through the ROS 2 installation tutorial. If you run into errors in the next few steps, a good place to start is to go back and make sure you have installed ROS 2 correctly.  One that users commonly forget is to source the ROS 2 install itself.  ::
+MoveIt 2 currently supports multiple versions of ROS.
+Install whichever version you prefer.
+We primarily support ROS installed Ubuntu 22.04 but other methods and platforms may work with small changes to the instructions listed below.
+If you are just getting started we would recommend you use the latest stable version of ROS (Iron) on Ubuntu 22.04 for the most seamless experience.
+- `Rolling Ridley <https://docs.ros.org/en/rolling/Installation.html>`_ - Rolling Development Release
+- `Irin Irwini <https://docs.ros.org/en/iron/Installation.html>`_ - Latest Stable Release - May 2023
+- `Humble Haskbill <https://docs.ros.org/en/humble/Installation.html>`_ - LTS Release - May 2022
 
-  source /opt/ros/rolling/setup.bash
+It is easy to miss steps when going through the ROS 2 installation tutorial. If you run into errors in the next few steps, a good place to start is to go back and make sure you have installed ROS 2 correctly.  One that users commonly forget is to source the ROS 2 install itself. Note to source the version of ROS you installed.  ::
+
+  source /opt/ros/iron/setup.bash
 
 .. note:: Unlike ROS 1 setup scripts, in ROS 2 the setup scripts do not attempt to switch what version of ROS you are using.  This means that if you have previously sourced a different version of ROS, including from within your ``.bashrc`` file, you will run into errors during the building step.  To fix this change what is sourced in your ``.bashrc`` and start a new terminal.
 

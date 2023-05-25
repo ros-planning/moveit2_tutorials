@@ -1,0 +1,43 @@
+# Docker Compose file for Isaac ROS 2 Control
+#
+# Usage:
+#
+# To build the images:
+#   docker compose build
+#
+# To start up a specific service by name:
+#   docker compose up <name>
+#
+# To open an interactive shell to a running container:
+# (You can tab complete to get the container name)
+#   docker exec -it <container_name> bash
+
+services:
+  base:
+    image: isaac_moveit_tutorial
+    build:
+      context: ../../..
+      dockerfile: doc/how_to_guides/isaac_panda/.docker/Dockerfile
+    # Interactive shell
+    stdin_open: true
+    tty: true
+    # Networking and IPC for ROS 2
+    network_mode: host
+    ipc: host
+    privileged: true
+    environment:
+      # Default the ROS_DOMAIN_ID to zero if not set on the host
+      - ROS_DOMAIN_ID=${ROS_DOMAIN_ID:-0}
+      # Allows graphical programs in the container
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
+    volumes:
+      # Allows graphical programs in the container
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - ${XAUTHORITY:-$HOME/.Xauthority}:/root/.Xauthority
+  demo_isaac:
+    extends: base
+    command: ros2 launch moveit2_tutorials isaac_demo.launch.py
+  demo_mock_components:
+    extends: base
+    command: ros2 launch moveit2_tutorials isaac_demo.launch.py ros2_control_hardware_type:=mock_components

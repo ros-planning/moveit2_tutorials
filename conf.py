@@ -134,8 +134,8 @@ templates_path = [
 # smv_tag_whitelist = None
 
 smv_branch_whitelist = r"^(main|humble)$"
-smv_released_pattern = r"^refs/(heads|remotes/[^/]+)/(humble).*$"
-smv_latest_version = "humble"
+smv_released_pattern = r"^refs/(heads|remotes/[^/]+)/(main|humble).*$"
+smv_latest_version = "main"
 smv_eol_versions = []
 smv_remote_whitelist = r"^(origin|upstream)$"
 smv_prefer_remote_refs = True

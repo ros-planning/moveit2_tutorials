@@ -11,7 +11,7 @@ help:
 
 multiversion: Makefile
 	sphinx-multiversion $(OPTS) "$(SOURCE)" build/html
-	@echo "<html><head><meta http-equiv=\"refresh\" content=\"0; url=humble/index.html\" /></head></html>" > build/html/index.html
+	@echo "<html><head><meta http-equiv=\"refresh\" content=\"0; url=main/index.html\" /></head></html>" > build/html/index.html
 
 local-with-api: Makefile
 	@echo Building local with API

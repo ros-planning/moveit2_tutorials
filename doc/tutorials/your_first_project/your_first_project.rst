@@ -3,7 +3,7 @@ Your First C++ MoveIt Project
 
 This tutorial will step you through writing your first C++ application with MoveIt.
 
-Warning: Most features in MoveIt will not work properly since additional parameters are required for full Move Group functionality. For a full setup, please continue with the :doc:`Move Group C++ Interface Tutorial <doc/examples/move_group_interface/move_group_interface_tutorial>`.
+Warning: Most features in MoveIt will not work properly since additional parameters are required for full Move Group functionality. For a full setup, please continue with the :doc:`Move Group C++ Interface Tutorial </doc/examples/move_group_interface/move_group_interface_tutorial>`.
 
 Prerequisites
 -------------

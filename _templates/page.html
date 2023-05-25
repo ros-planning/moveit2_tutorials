@@ -13,13 +13,8 @@
       <a href="{{ vpathto(latest_version.name) }}">{{latest_version.name | title }}</a>.
 
       {% elif current_version.is_released %}
-      You're reading the documentation for an older, but still supported, version of MoveIt 2.
-      For information on the recommended stable version, please have a look at
-      <a href="{{ vpathto(latest_version.name) }}">{{latest_version.name | title }}</a>.
-
-      {% else %}
-      You're reading the documentation for the non-stable development version of MoveIt 2.
-      For the stable, released version, please have a look at
+      You're reading the documentation for a stable version of MoveIt that is not being developed further.
+      For information on the recommended version, please have a look at
       <a href="{{ vpathto(latest_version.name) }}">{{latest_version.name | title }}</a>.
       {% endif %}
   </p>
