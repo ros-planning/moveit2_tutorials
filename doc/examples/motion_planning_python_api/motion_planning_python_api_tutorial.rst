@@ -187,7 +187,7 @@ Using the planning component represented by the ``panda_arm`` variable we can be
                 if plan_result:
                         logger.info("Executing plan")
                         robot_trajectory = plan_result.trajectory
-                        robot.execute(robot_trajectory, blocking=True, controllers=[])
+                        robot.execute(robot_trajectory, controllers=[])
                 else:
                         logger.error("Planning failed")
 

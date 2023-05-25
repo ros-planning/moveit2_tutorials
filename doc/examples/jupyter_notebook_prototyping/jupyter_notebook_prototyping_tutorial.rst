@@ -292,7 +292,7 @@ First we create a helper function that we will use later when planning and execu
                 # execute the plan
                 if plan_result:
                         robot_trajectory = plan_result.trajectory
-                        robot.execute(robot_trajectory, blocking=True, controllers=[])
+                        robot.execute(robot_trajectory, controllers=[])
                 else:
                         print("Planning failed")
 

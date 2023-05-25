@@ -54,6 +54,7 @@
   <exec_depend>moveit</exec_depend>
   <exec_depend>moveit_resources_panda_moveit_config</exec_depend>
   <exec_depend>moveit_configs_utils</exec_depend>
+  <exec_depend>moveit_py</exec_depend>
   <exec_depend>robot_state_publisher</exec_depend>
   <exec_depend>ros2_control</exec_depend>
   <exec_depend>rviz2</exec_depend>

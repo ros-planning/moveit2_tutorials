@@ -29,7 +29,7 @@ def plan_and_execute(
     if plan_result:
         logger.info("Executing plan")
         robot_trajectory = plan_result.trajectory
-        robot.execute(robot_trajectory, blocking=True, controllers=[])
+        robot.execute(robot_trajectory, controllers=[])
     else:
         logger.error("Planning failed")
 
