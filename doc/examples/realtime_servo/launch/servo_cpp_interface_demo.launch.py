@@ -14,14 +14,11 @@ def generate_launch_description():
         .to_moveit_configs()
     )
     # Get parameters for the Servo node
-    servo_params = (
-        ParameterBuilder("moveit_servo")
-        .yaml(
-            parameter_namespace="moveit_servo",
-            file_path="config/panda_simulated_config.yaml",
-        )
+    servo_params = {
+        "moveit_servo": ParameterBuilder("moveit_servo")
+        .yaml("config/panda_simulated_config.yaml")
         .to_dict()
-    )
+    }
 
     # A node to publish world -> panda_link0 transform
     static_tf = Node(

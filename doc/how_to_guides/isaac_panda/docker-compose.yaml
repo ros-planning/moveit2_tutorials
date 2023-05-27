@@ -35,9 +35,21 @@ services:
       # Allows graphical programs in the container
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - ${XAUTHORITY:-$HOME/.Xauthority}:/root/.Xauthority
-  demo_isaac:
+
+  # Use this service if you want to run the moveit container on a computer without a GPU
+  # You will still be able to use pytorch, but you will not be able to use the GPU.
+  demo_isaac_no_gpu:
     extends: base
     command: ros2 launch moveit2_tutorials isaac_demo.launch.py
+
   demo_mock_components:
     extends: base
     command: ros2 launch moveit2_tutorials isaac_demo.launch.py ros2_control_hardware_type:=mock_components
+
+  demo_isaac:
+    extends: demo_isaac_no_gpu
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]

@@ -166,7 +166,7 @@ int main(int argc, char** argv)
 
   // Initializing Servo
   // ^^^^^^^^^^^^^^^^^^
-  auto servo_param_listener = std::make_unique<const servo::ParamListener>(node_);
+  auto servo_param_listener = std::make_unique<const servo::ParamListener>(node_, "moveit_servo");
 
   // Initialize the Servo C++ interface by passing a pointer to the node, the parameters, and the PSM
   moveit_servo::Servo servo(node_, planning_scene_monitor, std::move(servo_param_listener));

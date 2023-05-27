@@ -68,12 +68,28 @@ def generate_launch_description():
     )
 
     # Static TF
-    static_tf_node = Node(
+    world2robot_tf_node = Node(
         package="tf2_ros",
         executable="static_transform_publisher",
         name="static_transform_publisher",
         output="log",
         arguments=["0.0", "0.0", "0.0", "0.0", "0.0", "0.0", "world", "panda_link0"],
+    )
+    hand2camera_tf_node = Node(
+        package="tf2_ros",
+        executable="static_transform_publisher",
+        name="static_transform_publisher",
+        output="log",
+        arguments=[
+            "0.04",
+            "0.0",
+            "0.04",
+            "0.0",
+            "0.0",
+            "0.0",
+            "panda_hand",
+            "sim_camera",
+        ],
     )
 
     # Publish TF
@@ -124,7 +140,8 @@ def generate_launch_description():
         [
             ros2_control_hardware_type,
             rviz_node,
-            static_tf_node,
+            world2robot_tf_node,
+            hand2camera_tf_node,
             robot_state_publisher,
             move_group_node,
             ros2_control_node,

@@ -6,6 +6,5 @@ __pycache__
 **/_templates
 **/build
 **/.vscode
-**/.docker
 *.md
 *.rst
