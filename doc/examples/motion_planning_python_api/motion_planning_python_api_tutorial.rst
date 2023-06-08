@@ -5,7 +5,7 @@ Motion Planning Python API
 
         <iframe width="560" height="315" src="https://www.youtube.com/embed/7KvF7Dj7bz0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-In this tutorial we cover the basics of the motion planning API for ``moveit_py``.
+In this tutorial, we will cover the basics of the motion planning API for ``moveit_py``.
 This tutorial is broken down into the following sections:
 
 * **Getting Started:** An outline of the tutorial setup requirements.
@@ -93,7 +93,7 @@ An example of such a configuration file is given below: ::
                         planning_time: 1.5
 
 
-The first block of the configuration file sets the planning scene monitor options such as the topics that it subsribes to (Note: if you aren't familiar with the planning scene monitor, you should consider reviewing ... ): ::
+The first block of the configuration file sets the planning scene monitor options such as the topics that it subscribes to (Note: if you aren't familiar with the planning scene monitor, consider reviewing :doc:`this tutorial </doc/examples/planning_scene_monitor/planning_scene_monitor_tutorial>` ): ::
 
         planning_scene_monitor_options:
                 name: "planning_scene_monitor"
@@ -104,7 +104,9 @@ The first block of the configuration file sets the planning scene monitor option
                 monitored_planning_scene_topic: "/moveit_cpp/monitored_planning_scene"
                 wait_for_initial_state_timeout: 10.0
 
-The second block of the configuration file sets the planning pipelines that we wish to use. MoveIt supports multiple motion planning libraries including OMPL, PILZ industrial motion planner, Stochastic Trajectory Optimization for Motion Planning (STOMP), Search-Based Planning Library (SBPL) and Covariant Hamiltonian Optimization for Motion Planning (CHOMP) to name a few. When configuring our ``moveit_py`` node, we need to specify the configuration for planning pipelines we wish to use: ::
+The second block of the configuration file sets the planning pipelines that we wish to use.
+MoveIt supports multiple motion planning libraries including OMPL, Pilz Industrial Motion Planner, Stochastic Trajectory Optimization for Motion Planning (STOMP), Search-Based Planning Library (SBPL), and Covariant Hamiltonian Optimization for Motion Planning (CHOMP) to name a few.
+When configuring our ``moveit_py`` node, we need to specify the configuration for planning pipelines we wish to use: ::
 
         planning_pipelines:
                 pipeline_names: ["ompl", "pilz_industrial_motion_planner", "chomp", "ompl_rrt_star"]
@@ -146,11 +148,13 @@ For each of these named pipelines we must provide a configuration that identifie
                         max_acceleration_scaling_factor: 1.0
                         planning_time: 1.5
 
-These specified parameters will be made available as ``moveit_py`` node parameters and will be leveraged at runtime when performing planning. This is what we will investigate next.
+These specified parameters will be made available as ``moveit_py`` node parameters and will be leveraged at runtime when performing planning.
+This is what we will investigate next.
 
 Instantiating moveit_py and planning component
 ----------------------------------------------------
-Before we can plan motions we need to instantiate a ``moveit_py`` node and its derived planning component. We will also instantiate a rclpy logger object: ::
+Before we can plan motions, we need to instantiate a ``moveit_py`` node and its derived planning component.
+We will also instantiate a ``rclpy`` logger object: ::
 
         rclpy.init()
         logger = rclpy.logging.get_logger("moveit_py.pose_goal")
@@ -160,7 +164,8 @@ Before we can plan motions we need to instantiate a ``moveit_py`` node and its d
         panda_arm = panda.get_planning_component("panda_arm")
         logger.info("MoveItPy instance created")
 
-Using the planning component represented by the ``panda_arm`` variable we can begin to perform motion planning. We also define a helper function for planning and executing motions: ::
+Using the planning component represented by the ``panda_arm`` variable, we can begin to perform motion planning.
+We also define a helper function for planning and executing motions: ::
 
         def plan_and_execute(
                 robot,
@@ -206,8 +211,9 @@ We start exploring the ``moveit_py`` motion planning API through executing a sin
 
 Single Pipeline Planning - Robot State
 ----------------------------------------------------
-Next we will plan to a robot state.
-Such a method is quite flexible as we can alter the robot state configuration as we wish (e.g. through setting joint values), here we will just set the robot state to a random configuration for simplicity. We will use the ``set_start_state_to_current_state`` method to set the start state of the robot to its current state and the ``set_goal_state`` method to set the goal state of the robot.
+Next, we will plan to a robot state.
+Such a method is quite flexible as we can alter the robot state configuration as we wish (e.g., through setting joint values).
+Here, we will use the ``set_start_state_to_current_state`` method to set the start state of the robot to its current state and the ``set_goal_state`` method to set the goal state to a random configuration.
 We will then plan to the goal state and execute the plan: ::
 
         # instantiate a RobotState instance using the current robot model
@@ -249,7 +255,8 @@ Here we demonstrate how to set a pose goal for the end effector of the robot: ::
 
 Single Pipeline Planning - Custom Constraints
 ----------------------------------------------------
-You can also control the output of motion planning via custom constraints. Here we demonstrate planning to a configuration that satisfies a set of joint constraints: ::
+You can also control the output of motion planning via custom constraints.
+Here we demonstrate planning to a configuration that satisfies a set of joint constraints: ::
 
         # set plan start state to current state
         panda_arm.set_start_state_to_current_state()
@@ -310,13 +317,13 @@ The code for this section requires you to run a different Python file, which you
 
         ros2 launch moveit2_tutorials motion_planning_python_api_tutorial.launch.py example_file:=motion_planning_python_api_planning_scene.py
 
-Interacting with a planning scene requires you to create a planning scene monitor ::
+Interacting with a planning scene requires you to create a planning scene monitor: ::
 
         panda = MoveItPy(node_name="moveit_py_planning_scene")
         panda_arm = panda.get_planning_component("panda_arm")
         planning_scene_monitor = panda.get_planning_scene_monitor()
 
-You can then add collision objects to a planning scene using the planning scene monitor's ``read_write`` context ::
+You can then add collision objects to a planning scene using the planning scene monitor's ``read_write`` context: ::
 
         with planning_scene_monitor.read_write() as scene:
                 collision_object = CollisionObject()
@@ -339,14 +346,14 @@ You can then add collision objects to a planning scene using the planning scene 
                 scene.apply_collision_object(collision_object)
                 scene.current_state.update()  # Important to ensure the scene is updated
 
-Removing objects can be achieved similarly using the ``CollisionObject.REMOVE`` operation, or by removing all objects from the scene ::
+Removing objects can be achieved similarly using the ``CollisionObject.REMOVE`` operation, or by removing all objects from the scene: ::
 
         with planning_scene_monitor.read_write() as scene:
                 scene.remove_all_collision_objects()
                 scene.current_state.update()
 
 You can also use the ``read_only`` context of a planning scene monitor for tasks that do not require modifying the scene, such as collision checking.
-For example ::
+For example: ::
 
         with planning_scene_monitor.read_only() as scene:
                 robot_state = scene.current_state

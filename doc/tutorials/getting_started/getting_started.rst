@@ -1,22 +1,27 @@
 Getting Started
 ===============
 
-Here we will setup your environment for best running the tutorials. This will create a Colcon workspace, download all of the latest MoveIt source code, and build everything from source to ensure you have the latest fixes and improvements.
+Here, we will setup your environment for best running the tutorials.
+This will create a colcon workspace, download all of the latest MoveIt source code, and build everything from source to ensure you have the latest fixes and improvements.
 
-Building all the source code of MoveIt can take 20-30 minutes, depending on the CPU speed and available RAM of your computer. If you are on a less performant system, or generally just want to get started quicker, checkout our :doc:`Docker Guide </doc/how_to_guides/how_to_setup_docker_containers_in_ubuntu>`.
+Building all the source code of MoveIt can take 20-30 minutes, depending on the CPU speed and available RAM of your computer.
+If you are on a less performant system, or generally just want to get started quicker, check out our :doc:`Docker Guide </doc/how_to_guides/how_to_setup_docker_containers_in_ubuntu>`.
 
-Install ROS 2 and Colcon
+Install ROS 2 and colcon
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 MoveIt 2 currently supports multiple versions of ROS.
 Install whichever version you prefer.
 We primarily support ROS installed Ubuntu 22.04 but other methods and platforms may work with small changes to the instructions listed below.
-If you are just getting started we would recommend you use the latest stable version of ROS (Iron) on Ubuntu 22.04 for the most seamless experience.
+If you are just getting started, we recommend you use the latest stable version of ROS (Iron) on Ubuntu 22.04 for the most seamless experience.
 
 * `Rolling Ridley <https://docs.ros.org/en/rolling/Installation.html>`_ - Rolling Development Release
-* `Irin Irwini <https://docs.ros.org/en/iron/Installation.html>`_ - Latest Stable Release - May 2023
-* `Humble Haskbill <https://docs.ros.org/en/humble/Installation.html>`_ - LTS Release - May 2022
+* `Iron Irwini <https://docs.ros.org/en/iron/Installation.html>`_ - Latest Stable Release - May 2023
+* `Humble Hawksbill <https://docs.ros.org/en/humble/Installation.html>`_ - LTS Release - May 2022
 
-It is easy to miss steps when going through the ROS 2 installation tutorial. If you run into errors in the next few steps, a good place to start is to go back and make sure you have installed ROS 2 correctly.  One that users commonly forget is to source the ROS 2 install itself. Note to source the version of ROS you installed.  ::
+It is easy to miss steps when going through the ROS 2 installation tutorial.
+If you run into errors in the next few steps, a good place to start is to go back and make sure you have installed ROS 2 correctly.
+One that users commonly forget is to source the ROS 2 install itself.
+Note to source the version of ROS you installed.  ::
 
   source /opt/ros/iron/setup.bash
 
@@ -61,11 +66,13 @@ Next we will download the source code for the rest of MoveIt: ::
 
   vcs import < moveit2_tutorials/moveit2_tutorials.repos
 
-The import command may ask for your GitHub credentials. You can just press Enter until it moves on (ignore the "Authentication failed" error).
+The import command may ask for your GitHub credentials.
+You can just press Enter until it moves on (ignore the "Authentication failed" error).
 
 Build your Colcon Workspace
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The following will install from Debian any package dependencies not already in your workspace. This is the step that will install MoveIt and all of its dependencies: ::
+The following will install from Debian any package dependencies not already in your workspace.
+This is the step that will install MoveIt and all of its dependencies: ::
 
   sudo apt update && rosdep install -r --from-paths . --ignore-src --rosdistro $ROS_DISTRO -y
 
@@ -102,7 +109,9 @@ Optional: add the previous command to your ``.bashrc``: ::
 Switch to Cyclone DDS
 ^^^^^^^^^^^^^^^^^^^^^
 
-As of Sep 26, 2022, the default ROS 2 middleware (RMW) implementation has an issue. As a workaround, switch to Cyclone DDS. (Note: this makes all nodes started using this RMW incompatible with any other nodes not using Cyclone DDS.) ::
+As of Sep 26, 2022, the default ROS 2 middleware (RMW) implementation has an issue.
+As a workaround, switch to Cyclone DDS.
+(Note: this makes all nodes started using this RMW incompatible with any other nodes not using Cyclone DDS.) ::
 
   sudo apt install ros-rolling-rmw-cyclonedds-cpp
   # You may want to add this to ~/.bashrc to source it automatically
@@ -110,4 +119,5 @@ As of Sep 26, 2022, the default ROS 2 middleware (RMW) implementation has an iss
 
 Next Step
 ^^^^^^^^^
-Nice job! Next we will :doc:`Visualize a robot with the interactive motion planning plugin for RViz </doc/tutorials/quickstart_in_rviz/quickstart_in_rviz_tutorial>`
+Nice job!
+Next, we will :doc:`Visualize a robot with the interactive motion planning plugin for RViz </doc/tutorials/quickstart_in_rviz/quickstart_in_rviz_tutorial>`

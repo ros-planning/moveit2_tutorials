@@ -19,6 +19,7 @@ Configuring and Using MoveIt
    parallel_planning/parallel_planning_tutorial
    controller_teleoperation/controller_teleoperation
    persistent_scenes_and_states/persistent_scenes_and_states
+   isaac_panda/isaac_panda_tutorial
 
 Developing and Documenting MoveIt
 ---------------------------------
@@ -30,4 +31,3 @@ Developing and Documenting MoveIt
    how_to_generate_api_doxygen_locally
    how_to_setup_docker_containers_in_ubuntu
    how_to_write_doxygen
-   isaac_panda/isaac_panda_tutorial
