@@ -1,0 +1,14 @@
+
+# Configure pick_ik as the solver to use with panda_arm
+panda_arm:
+  kinematics_solver: pick_ik/PickIkPlugin  # The IK solver plugin to use
+  kinematics_solver_timeout: 0.05  # Maximum duration in seconds the solver is allowed to run per attempt
+  kinematics_solver_attempts: 3  # Maximum number of solver attempts to find a solution
+  mode: global  # Solver mode 'global' enables evolutionary algorithm with gradient descent, and 'local' uses only gradient descent
+  position_scale: 1.0  # A scale factor for the position cost, setting this to 0.0 means rotation-only IK
+  rotation_scale: 0.5  # A scale factor for the orientation cost, setting this to 0.0 means position-only IK
+  position_threshold: 0.001  # Threshold for position difference in meters to consider a solution valid
+  orientation_threshold: 0.01  # Threshold for orientation difference in radians to consider a solution valid
+  cost_threshold: 0.001  # Maximum cost function value for a valid solution (all cost functions must return a value lower than this)
+  minimal_displacement_weight: 0.0  # Weight for joint angle difference cost function. Leave it low or zero for far goals, and make higher for interpolation or jogging
+  gd_step_size: 0.0001  # Step size for the gradient descent

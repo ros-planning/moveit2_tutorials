@@ -20,6 +20,7 @@ Configuring and Using MoveIt
    controller_teleoperation/controller_teleoperation
    persistent_scenes_and_states/persistent_scenes_and_states
    isaac_panda/isaac_panda_tutorial
+   pick_ik/pick_ik_tutorial
 
 Developing and Documenting MoveIt
 ---------------------------------
