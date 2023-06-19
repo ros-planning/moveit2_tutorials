@@ -14,7 +14,6 @@ from launch_ros.actions import Node
 
 
 def generate_test_description():
-
     # Launch the tutorial demo
     demo_path = (
         get_package_share_directory("moveit2_tutorials") + "/launch/demo.launch.py"

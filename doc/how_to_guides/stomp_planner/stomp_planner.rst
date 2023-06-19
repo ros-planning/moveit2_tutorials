@@ -77,7 +77,7 @@ If you have the ``panda_moveit_config`` from the `ros-planning/moveit_resources 
 
 STOMP Parameters
 ----------------
-STOMP's parameters are configurable using the `stomp_planning.yaml <https://github.com/ros-planning/moveit_resources/blob/ros2/panda_moveit_config/config/stomp_planning.yaml>`__. All parameters are defined by the `stomp_moveit.yaml <https://github.com/ros-planning/moveit2/blob/main/moveit_planners/stomp/res/stomp_moveit.yaml>`_ which is used as input for the `generate_parameter_library <https://github.com/PickNikRobotics/generate_parameter_library>`_. In that file you can also find more information like default values and allowable ranges:
+Into the `stomp_planning.yaml` file you can also find more information like default values and allowable ranges:
 
 **Optimization Parameters**:
 

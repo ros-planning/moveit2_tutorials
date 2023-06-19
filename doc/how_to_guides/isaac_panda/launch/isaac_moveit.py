@@ -261,7 +261,6 @@ rs_viewport.dock_in(viewport, omni.ui.DockPosition.RIGHT)
 
 
 while simulation_app.is_running():
-
     # Run with a fixed step size
     simulation_context.step(render=True)
 

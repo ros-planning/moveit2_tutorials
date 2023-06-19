@@ -280,7 +280,6 @@ napoleon_use_rtype = False
 
 
 class RedirectFrom(Directive):
-
     has_content = True
     template_name = "layout.html"
     redirections = {}
