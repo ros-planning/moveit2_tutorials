@@ -113,6 +113,16 @@ prims.create_prim(
 
 simulation_app.update()
 
+try:
+    ros_domain_id = int(os.environ["ROS_DOMAIN_ID"])
+    print("Using ROS_DOMAIN_ID: ", ros_domain_id)
+except ValueError:
+    print("Invalid ROS_DOMAIN_ID integer value. Setting value to 0")
+    ros_domain_id = 0
+except KeyError:
+    print("ROS_DOMAIN_ID environment variable is not set. Setting value to 0")
+    ros_domain_id = 0
+
 # Creating a action graph with ROS component nodes
 try:
     og.Controller.edit(
@@ -203,7 +213,7 @@ try:
                 ),
             ],
             og.Controller.Keys.SET_VALUES: [
-                ("Context.inputs:domain_id", int(os.environ["ROS_DOMAIN_ID"])),
+                ("Context.inputs:domain_id", ros_domain_id),
                 # Setting the /Franka target prim to Articulation Controller node
                 ("ArticulationController.inputs:usePath", True),
                 ("ArticulationController.inputs:robotPath", FRANKA_STAGE_PATH),
