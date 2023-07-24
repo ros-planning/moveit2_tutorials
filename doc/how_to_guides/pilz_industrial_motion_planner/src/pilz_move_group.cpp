@@ -178,6 +178,7 @@ int main(int argc, char* argv[])
   }
 
   // Shutdown ROS
+  spinner.join();
   rclcpp::shutdown();
   return 0;
 }
