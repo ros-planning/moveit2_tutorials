@@ -16,7 +16,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "rviz_config",
-            default_value="kinova_moveit_config_demo.rviz",
+            default_value="panda_moveit_config_demo.rviz",
             description="RViz configuration file",
         )
     )
@@ -28,24 +28,15 @@ def generate_launch_description():
 
 def launch_setup(context, *args, **kwargs):
 
-    launch_arguments = {
-        "robot_ip": "xxx.yyy.zzz.www",
-        "use_fake_hardware": "true",
-        "gripper": "robotiq_2f_85",
-        "dof": "7",
-    }
-
     moveit_config = (
-        MoveItConfigsBuilder(
-            "gen3", package_name="kinova_gen3_7dof_robotiq_2f_85_moveit_config"
-        )
-        .robot_description(mappings=launch_arguments)
-        .trajectory_execution(file_path="config/moveit_controllers.yaml")
+        MoveItConfigsBuilder("moveit_resources_panda")
+        .robot_description(file_path="config/panda.urdf.xacro")
+        .trajectory_execution(file_path="config/gripper_moveit_controllers.yaml")
         .planning_scene_monitor(
             publish_robot_description=True, publish_robot_description_semantic=True
         )
         .planning_pipelines(
-            pipelines=["ompl", "stomp", "pilz_industrial_motion_planner"]
+            pipelines=["ompl", "chomp", "pilz_industrial_motion_planner"]
         )
         .to_moveit_configs()
     )
@@ -85,7 +76,7 @@ def launch_setup(context, *args, **kwargs):
         executable="static_transform_publisher",
         name="static_transform_publisher",
         output="log",
-        arguments=["0.0", "0.0", "0.0", "0.0", "0.0", "0.0", "world", "base_link"],
+        arguments=["0.0", "0.0", "0.0", "0.0", "0.0", "0.0", "world", "panda_link0"],
     )
 
     # Publish TF
@@ -99,7 +90,7 @@ def launch_setup(context, *args, **kwargs):
 
     # ros2_control using FakeSystem as hardware
     ros2_controllers_path = os.path.join(
-        get_package_share_directory("kinova_gen3_7dof_robotiq_2f_85_moveit_config"),
+        get_package_share_directory("moveit_resources_panda_moveit_config"),
         "config",
         "ros2_controllers.yaml",
     )
@@ -115,6 +106,8 @@ def launch_setup(context, *args, **kwargs):
         executable="spawner",
         arguments=[
             "joint_state_broadcaster",
+            "--controller-manager-timeout",
+            "300",
             "--controller-manager",
             "/controller_manager",
         ],
@@ -123,13 +116,13 @@ def launch_setup(context, *args, **kwargs):
     arm_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["joint_trajectory_controller", "-c", "/controller_manager"],
+        arguments=["panda_arm_controller", "-c", "/controller_manager"],
     )
 
     hand_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["robotiq_gripper_controller", "-c", "/controller_manager"],
+        arguments=["panda_hand_controller", "-c", "/controller_manager"],
     )
     nodes_to_start = [
         rviz_node,
