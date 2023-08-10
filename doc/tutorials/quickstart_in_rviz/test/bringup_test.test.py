@@ -43,7 +43,6 @@ def generate_test_description():
             ),
             base_launch,
             # The test itself
-            bringup_test,
             TimerAction(period=2.0, actions=[bringup_test]),
             launch_testing.actions.ReadyToTest(),
         ]

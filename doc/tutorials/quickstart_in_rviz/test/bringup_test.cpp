@@ -5,6 +5,8 @@
 #include <rclcpp/rclcpp.hpp>
 #include <rclcpp_action/rclcpp_action.hpp>
 
+#include <chrono>
+#include <future>
 #include <gtest/gtest.h>
 #include <stdlib.h>
 
@@ -71,7 +73,13 @@ TEST_F(BringupTestFixture, BasicBringupTest)
       };
   auto send_goal_options = rclcpp_action::Client<control_msgs::action::FollowJointTrajectory>::SendGoalOptions();
   send_goal_options.result_callback = result_cb;
-  control_client->async_send_goal(joint_traj_request, send_goal_options);
+
+  // Ensure the status of executing the trajectory is not a timeout.
+  auto goal_handle_future = control_client->async_send_goal(joint_traj_request, send_goal_options);
+  ASSERT_NE(goal_handle_future.wait_for(std::chrono::seconds(5)), std::future_status::timeout);
+
+  // Sleeping for a bit helps prevent segfaults when shutting down the control node.
+  std::this_thread::sleep_for(std::chrono::seconds(1));
 }
 }  // namespace moveit2_tutorials::quickstart_in_rviz
 

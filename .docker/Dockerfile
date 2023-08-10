@@ -32,7 +32,7 @@ RUN . "/opt/ros/${ROS_DISTRO}/setup.sh" &&\
 
 # Remove the hello_world tutorial cpp file and replace it with the planning_around_objects file
 RUN rm src/hello_moveit/src/hello_moveit.cpp
-COPY ./doc/tutorials/planning_around_objects/hello_moveit.cpp src/hello_moveit/src/hello_moveit.cpp
+COPY ./doc/tutorials/planning_around_objects/hello_moveit_kinova.cpp src/hello_moveit/src/hello_moveit.cpp
 
 ######################### Pick and Place (MTC) Image  #########################################
 
