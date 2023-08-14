@@ -5,6 +5,8 @@
 #include <rclcpp/rclcpp.hpp>
 #include <rclcpp_action/rclcpp_action.hpp>
 
+#include <chrono>
+#include <future>
 #include <gtest/gtest.h>
 #include <stdlib.h>
 
@@ -50,17 +52,16 @@ TEST_F(BringupTestFixture, BasicBringupTest)
 {
   // Check for several expected action servers
   auto control_client = rclcpp_action::create_client<control_msgs::action::FollowJointTrajectory>(
-      node_, "/panda_arm_controller/follow_joint_trajectory");
+      node_, "/joint_trajectory_controller/follow_joint_trajectory");
   EXPECT_TRUE(control_client->wait_for_action_server());
   auto move_group_client = rclcpp_action::create_client<moveit_msgs::action::MoveGroup>(node_, "/move_action");
   EXPECT_TRUE(move_group_client->wait_for_action_server());
 
   // Send a trajectory request
   trajectory_msgs::msg::JointTrajectory traj_msg;
-  traj_msg.joint_names = { "panda_joint1", "panda_joint2", "panda_joint3", "panda_joint4",
-                           "panda_joint5", "panda_joint6", "panda_joint7" };
+  traj_msg.joint_names = { "joint_1", "joint_2", "joint_3", "joint_4", "joint_5", "joint_6", "joint_7" };
   trajectory_msgs::msg::JointTrajectoryPoint point_msg;
-  point_msg.positions = { 0, -0.785, 0, -2.356, 0, 1.571, 0.785 };
+  point_msg.positions = { 0, 0.26, 3.14, -2.27, 0, 0.96, 1.57 };
   point_msg.time_from_start.sec = 1;
   traj_msg.points.push_back(point_msg);
   control_msgs::action::FollowJointTrajectory::Goal joint_traj_request;
@@ -72,7 +73,13 @@ TEST_F(BringupTestFixture, BasicBringupTest)
       };
   auto send_goal_options = rclcpp_action::Client<control_msgs::action::FollowJointTrajectory>::SendGoalOptions();
   send_goal_options.result_callback = result_cb;
-  control_client->async_send_goal(joint_traj_request, send_goal_options);
+
+  // Ensure the status of executing the trajectory is not a timeout.
+  auto goal_handle_future = control_client->async_send_goal(joint_traj_request, send_goal_options);
+  ASSERT_NE(goal_handle_future.wait_for(std::chrono::seconds(5)), std::future_status::timeout);
+
+  // Sleeping for a bit helps prevent segfaults when shutting down the control node.
+  std::this_thread::sleep_for(std::chrono::seconds(1));
 }
 }  // namespace moveit2_tutorials::quickstart_in_rviz
 

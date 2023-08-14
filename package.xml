@@ -36,6 +36,7 @@
   <depend>tf2_geometry_msgs</depend>
   <depend>tf2_ros</depend>
   <depend>moveit_task_constructor_core</depend>
+  <depend>pick_ik</depend>
 
   <build_depend>eigen</build_depend>
   <build_depend>geometric_shapes</build_depend>
@@ -59,6 +60,7 @@
   <exec_depend>ros2_control</exec_depend>
   <exec_depend>rviz2</exec_depend>
   <exec_depend>xacro</exec_depend>
+  <exec_depend>kinova_gen3_7dof_robotiq_2f_85_moveit_config</exec_depend>
 
   <test_depend>ament_cmake_gtest</test_depend>
   <test_depend>ros_testing</test_depend>

@@ -100,7 +100,7 @@ This code block should directly follow the code block that creates the collision
 
 Just as we did in the last tutorial, start RViz using the ``demo.launch.py`` script and run our program. If you're using one of the Docker tutorial containers, you can specify a different RViz configuration that already has the RvizVisualToolsGui panel added using: ::
 
-   ros2 launch moveit2_tutorials demo.launch.py rviz_config:=panda_hello_moveit.rviz
+   ros2 launch moveit2_tutorials demo.launch.py rviz_config:=kinova_hello_moveit.rviz
 
 .. image:: planning_around_object.png
 
@@ -108,7 +108,7 @@ Summary
 -------
 
 - You extended the program you wrote with MoveIt to plan around an object in the scene.
-- :codedir:`Here is a copy of the full hello_moveit.cpp source<tutorials/planning_around_objects/hello_moveit.cpp>`.
+- :codedir:`Here is a copy of the full hello_moveit.cpp source<tutorials/planning_around_objects/hello_moveit_kinova.cpp>`.
 
 Further Reading
 ---------------

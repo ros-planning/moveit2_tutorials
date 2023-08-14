@@ -52,7 +52,6 @@ include_directories(${THIS_PACKAGE_INCLUDE_DIRS})
 # add_subdirectory(doc/examples/tests)
 # add_subdirectory(doc/examples/trajopt_planner)
 # add_subdirectory(doc/examples/visualizing_collisions)
-
 add_subdirectory(doc/examples/jupyter_notebook_prototyping)
 add_subdirectory(doc/examples/motion_planning_api)
 add_subdirectory(doc/examples/motion_planning_pipeline)
@@ -66,11 +65,13 @@ add_subdirectory(doc/examples/robot_model_and_robot_state)
 add_subdirectory(doc/how_to_guides/isaac_panda)
 add_subdirectory(doc/how_to_guides/kinematics_cost_function)
 add_subdirectory(doc/how_to_guides/parallel_planning)
+add_subdirectory(doc/how_to_guides/chomp_planner)
 add_subdirectory(doc/how_to_guides/persistent_scenes_and_states)
 add_subdirectory(doc/how_to_guides/pilz_industrial_motion_planner)
 add_subdirectory(doc/how_to_guides/using_ompl_constrained_planning)
 add_subdirectory(doc/tutorials/pick_and_place_with_moveit_task_constructor)
 add_subdirectory(doc/tutorials/quickstart_in_rviz)
+add_subdirectory(doc/how_to_guides/pick_ik)
 
 ament_export_dependencies(
   ${THIS_PACKAGE_INCLUDE_DEPENDS}

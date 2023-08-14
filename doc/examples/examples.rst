@@ -72,7 +72,6 @@ Configuration
    kinematics_configuration/kinematics_configuration_tutorial
    custom_constraint_samplers/custom_constraint_samplers_tutorial
    ompl_interface/ompl_interface_tutorial
-   chomp_planner/chomp_planner_tutorial
    trajopt_planner/trajopt_planner_tutorial
    planning_adapters/planning_adapters_tutorial
 

@@ -139,7 +139,7 @@ In place of the comment that says "Next step goes here", add this code:
 
   // Create the MoveIt MoveGroup Interface
   using moveit::planning_interface::MoveGroupInterface;
-  auto move_group_interface = MoveGroupInterface(node, "panda_arm");
+  auto move_group_interface = MoveGroupInterface(node, "manipulator");
 
   // Set a target Pose
   auto const target_pose = []{
@@ -216,13 +216,13 @@ If it fails to find that within 10 seconds, it prints this error and terminates 
 The first thing we do is create the ``MoveGroupInterface``.
 This object will be used to interact with ``move_group``, which allows us to plan and execute trajectories.
 Note that this is the only mutable object that we create in this program.
-Another thing to take note of is the second argument to the ``MoveGroupInterface`` object we are creating here: ``"panda_arm"``.
+Another thing to take note of is the second argument to the ``MoveGroupInterface`` object we are creating here: ``"manipulator"``.
 That is the group of joints as defined in the robot description that we are going to operate on with this ``MoveGroupInterface``.
 
 .. code-block:: C++
 
   using moveit::planning_interface::MoveGroupInterface;
-  auto move_group_interface = MoveGroupInterface(node, "panda_arm");
+  auto move_group_interface = MoveGroupInterface(node, "manipulator");
 
 Then, we set our target pose and plan. Note that only the target pose is set (via ``setPoseTarget``).
 The starting pose is implicitly the position published by the joint state publisher, which could be changed using the

@@ -108,7 +108,7 @@ Global Planner
    :width: 500px
    :align: center
 
-The Global Planner is the simplest component of the architecture. It provides an action server which processes GlobalPlanner requests which include the common MotionPlanRequests which are processed by the Global Planner plugin. By default, this is simply MoveIt’s planning pipeline, but any kind of planner or even MTC could technically be used here. The planning result is reported using the action feedback and the solution trajectory is published to the Local Planner for further processing.
+The Global Planner is the simplest component of the architecture. It provides an action server that processes GlobalPlanner requests. These requests include common MotionPlanRequests, which are processed by the Global Planner plugin. By default, this is simply MoveIt’s planning pipeline, but any kind of planner or even MTC could technically be used here. The planning result is reported using the action feedback and the solution trajectory is published to the Local Planner for further processing.
 
 
 Local Planner

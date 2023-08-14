@@ -200,7 +200,7 @@ This section has insights as to when to use which planner and how using certain 
 
 For more information on each of these motion planners, refer to their individual tutorial pages
 :doc:`OMPL </doc/examples/ompl_interface/ompl_interface_tutorial>`,
-:doc:`CHOMP </doc/examples/chomp_planner/chomp_planner_tutorial>`, and
+:doc:`CHOMP </doc/how_to_guides/chomp_planner/chomp_planner_tutorial>`, and
 :doc:`STOMP </doc/how_to_guides/stomp_planner/stomp_planner>`.
 
 - **OMPL as a pre-processor for CHOMP**: OMPL can used as a base planner to produce an initial motion plan which can act as a initial guess for CHOMP. CHOMP can then produce optimized paths. In most cases, the quality of such a path produced should be better than that produced by OMPL alone or CHOMP alone.
