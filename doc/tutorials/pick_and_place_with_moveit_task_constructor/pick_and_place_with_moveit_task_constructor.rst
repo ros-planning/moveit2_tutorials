@@ -233,8 +233,8 @@ Open ``mtc_node.cpp`` in your editor of choice, and paste in the following code.
       auto interpolation_planner = std::make_shared<mtc::solvers::JointInterpolationPlanner>();
 
       auto cartesian_planner = std::make_shared<mtc::solvers::CartesianPath>();
-      cartesian_planner->setMaxVelocityScaling(1.0);
-      cartesian_planner->setMaxAccelerationScaling(1.0);
+      cartesian_planner->setMaxVelocityScalingFactor(1.0);
+      cartesian_planner->setMaxAccelerationScalingFactor(1.0);
       cartesian_planner->setStepSize(.01);
 
       auto stage_open_hand =
@@ -459,8 +459,8 @@ Feel free to try out the different solvers and see how the robot motion changes.
 .. code-block:: c++
 
       auto cartesian_planner = std::make_shared<mtc::solvers::CartesianPath>();
-      cartesian_planner->setMaxVelocityScaling(1.0);
-      cartesian_planner->setMaxAccelerationScaling(1.0);
+      cartesian_planner->setMaxVelocityScalingFactor(1.0);
+      cartesian_planner->setMaxAccelerationScalingFactor(1.0);
       cartesian_planner->setStepSize(.01);
 
 Now that we added in the planners, we can add a stage that will move the robot.

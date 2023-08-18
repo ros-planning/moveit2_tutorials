@@ -124,8 +124,8 @@ mtc::Task MTCTaskNode::createTask()
   auto interpolation_planner = std::make_shared<mtc::solvers::JointInterpolationPlanner>();
 
   auto cartesian_planner = std::make_shared<mtc::solvers::CartesianPath>();
-  cartesian_planner->setMaxVelocityScaling(1.0);
-  cartesian_planner->setMaxAccelerationScaling(1.0);
+  cartesian_planner->setMaxVelocityScalingFactor(1.0);
+  cartesian_planner->setMaxAccelerationScalingFactor(1.0);
   cartesian_planner->setStepSize(.01);
 
   // clang-format off
