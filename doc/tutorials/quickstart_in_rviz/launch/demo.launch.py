@@ -83,7 +83,7 @@ def launch_setup(context, *args, **kwargs):
         executable="static_transform_publisher",
         name="static_transform_publisher",
         output="log",
-        arguments=["0.0", "0.0", "0.0", "0.0", "0.0", "0.0", "world", "base_link"],
+        arguments=["--frame-id", "world", "--child-frame-id", "base_link"],
     )
 
     # Publish TF

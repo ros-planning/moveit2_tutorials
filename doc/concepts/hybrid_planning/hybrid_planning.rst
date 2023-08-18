@@ -27,7 +27,7 @@ The local planner is running continuously during execution and produces iterativ
 
 In order to enable solving these local problems the local planner must be fast, able to react to sensor feedback and in many cases real-time safe. Also, it should be deterministic in order to avoid jerky or unpredictable motions.
 
-In general, the local planner relies on the reference trajectory produced by the global planner so that it doesn’t get stuck in a local minima. Since local minima sometimes still can’t be ruled out, it can be required that the global planner is triggered for a replan in order to still reach the desired goal. This behavior requires a certain way to communicate planner events and to process them accordingly. For that purpose the Hybrid Planning architecture allows implementing an event-based logic that can be customized for the specific use case and planner types.
+In general, the local planner relies on the reference trajectory produced by the global planner so that it doesn’t get stuck in a local minimum. Since local minima sometimes still can’t be ruled out, it can be required that the global planner is triggered for a replan in order to still reach the desired goal. This behavior requires a certain way to communicate planner events and to process them accordingly. For that purpose the Hybrid Planning architecture allows implementing an event-based logic that can be customized for the specific use case and planner types.
 
 +-------------------------------------------+-------------------------------------------+
 | Global Planner                            | Local Planner                             |

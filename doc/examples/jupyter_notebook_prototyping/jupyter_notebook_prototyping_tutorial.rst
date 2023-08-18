@@ -121,7 +121,7 @@ Once our MoveIt configuration is defined we start the following set of nodes:
                 executable="static_transform_publisher",
                 name="static_transform_publisher",
                 output="log",
-                arguments=["0.0", "0.0", "0.0", "0.0", "0.0", "0.0", "world", "panda_link0"],
+                arguments=["--frame-id", "world", "--child-frame-id", "panda_link0"],
         )
 
         robot_state_publisher = Node(

@@ -29,9 +29,7 @@ def generate_launch_description():
         )
         .robot_description_semantic(file_path="config/panda.srdf")
         .trajectory_execution(file_path="config/gripper_moveit_controllers.yaml")
-        .planning_pipelines(
-            pipelines=["ompl", "chomp", "pilz_industrial_motion_planner"]
-        )
+        .planning_pipelines(pipelines=["ompl", "pilz_industrial_motion_planner"])
         .to_moveit_configs()
     )
 
@@ -72,7 +70,7 @@ def generate_launch_description():
         executable="static_transform_publisher",
         name="static_transform_publisher",
         output="log",
-        arguments=["0.0", "0.0", "0.0", "0.0", "0.0", "0.0", "world", "panda_link0"],
+        arguments=["--frame-id", "world", "--child-frame-id", "panda_link0"],
     )
     hand2camera_tf_node = Node(
         package="tf2_ros",
