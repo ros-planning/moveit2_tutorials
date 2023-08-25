@@ -27,3 +27,7 @@ repositories:
     type: git
     url: https://github.com/ros-planning/moveit_msgs
     version: ros2
+  pick_ik:
+    type: git
+    url: https://github.com/PickNikRobotics/pick_ik
+    version: main
