@@ -11,6 +11,11 @@ repositories:
     type: git
     url: https://github.com/PickNikRobotics/rosparam_shortcuts
     version: ros2
+  # Remove ros2_kortex when rolling binaries are available.
+  ros2_kortex:
+    type: git
+    url: https://github.com/Kinovarobotics/ros2_kortex.git
+    version: main
   rviz_visual_tools:
     type: git
     url: https://github.com/PickNikRobotics/rviz_visual_tools.git
