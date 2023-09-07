@@ -108,7 +108,7 @@ Summary
 -------
 
 - You extended the program you wrote with MoveIt to plan around an object in the scene.
-- :codedir:`Here is a copy of the full hello_moveit.cpp source<tutorials/planning_around_objects/hello_moveit_kinova.cpp>`.
+- :codedir:`Here is a copy of the full hello_moveit.cpp source<tutorials/planning_around_objects/hello_moveit.cpp>`.
 
 Further Reading
 ---------------
