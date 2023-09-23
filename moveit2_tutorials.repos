@@ -7,10 +7,6 @@ repositories:
     type: git
     url: https://github.com/ros-planning/moveit_visual_tools
     version: ros2
-  rosparam_shortcuts:
-    type: git
-    url: https://github.com/PickNikRobotics/rosparam_shortcuts
-    version: ros2
   # Remove ros2_kortex when rolling binaries are available.
   ros2_kortex:
     type: git
