@@ -15,8 +15,8 @@ def generate_launch_description():
     )
 
     sqlite_database = (
-        get_package_share_directory("moveit2_tutorials")
-        + "/data/kitchen_panda_db.sqlite"
+        get_package_share_directory("moveit_benchmark_resources")
+        + "/databases/panda_test_db.sqlite"
     )
 
     print(sqlite_database)

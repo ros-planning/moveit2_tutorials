@@ -73,7 +73,7 @@ Running the Demo
 ----------------
 If you have the ``panda_moveit_config`` from the `ros-planning/moveit_resources <https://github.com/ros-planning/moveit_resources>`_ repository you should be able to simply launch the demo setup and start planning with STOMP in RViZ ::
 
-  ros2 launch panda_moveit_config demo.launch.py
+  ros2 launch moveit_resources_panda_moveit_config demo.launch.py
 
 STOMP Parameters
 ----------------

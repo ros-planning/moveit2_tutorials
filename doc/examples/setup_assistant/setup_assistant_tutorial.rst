@@ -504,7 +504,7 @@ To build only the generated ``panda_moveit_config`` package and run the demo, fo
 
 Start the MoveIt demo to interactively plan and execute motions for the robot in RViz. ::
 
-   ros2 launch panda_moveit_config demo.launch.py
+   ros2 launch moveit_resources_panda_moveit_config demo.launch.py
 
 Check out this `brief YouTube video <https://youtu.be/f__udZlnTdM>`_ for an example of how to
 command the robot to move to the pre-defined ``ready`` pose and execute ``open`` and ``close`` motions on the hand.
