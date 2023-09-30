@@ -146,7 +146,7 @@ jobs:
         cp -f api.html build/html/main/doc/api/python_api/ # restore artifact html
 
     - name: Upload pages artifact
-      uses: actions/upload-pages-artifact@v1
+      uses: actions/upload-pages-artifact@v2
       if: github.repository_owner == 'ros-planning'
       with:
         path: build/html
