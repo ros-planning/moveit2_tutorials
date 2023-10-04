@@ -28,13 +28,14 @@ First, update the target pose with the following change to make the robot plan t
 
 .. code-block:: C++
 
-    // Set a target Pose
+    // Set a target Pose with updated values !!!
     auto const target_pose = [] {
       geometry_msgs::msg::Pose msg;
-      msg.orientation.w = 1.0;
-      msg.position.x = 0.28;
-      msg.position.y = 0.4;  // <---- This value was changed
-      msg.position.z = 0.5;
+      msg.orientation.y = 0.8;
+      msg.orientation.w = 0.6;
+      msg.position.x = 0.1;
+      msg.position.y = 0.4;
+      msg.position.z = 0.4;
       return msg;
     }();
     move_group_interface.setPoseTarget(target_pose);
@@ -108,7 +109,7 @@ Summary
 -------
 
 - You extended the program you wrote with MoveIt to plan around an object in the scene.
-- :codedir:`Here is a copy of the full hello_moveit.cpp source<tutorials/planning_around_objects/hello_moveit_kinova.cpp>`.
+- :codedir:`Here is a copy of the full hello_moveit.cpp source<tutorials/planning_around_objects/hello_moveit.cpp>`.
 
 Further Reading
 ---------------

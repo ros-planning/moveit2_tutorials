@@ -32,6 +32,8 @@ If the database file does not exist yet, an empty database will be created.
 Connecting to the storage backend
 ---------------------------------
 
+To run the demo you need to install git lfs by running ``git lfs install`` and clone [moveit_benchmark_resources](https://github.com/ros-planning/moveit_benchmark_resources.git) into your workspace.
+
 After choosing the storage plugin and configuring the launch.py file,
 run RViz using ::
 
