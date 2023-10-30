@@ -9,7 +9,6 @@ from moveit_configs_utils import MoveItConfigsBuilder
 
 
 def generate_launch_description():
-
     declared_arguments = []
     declared_arguments.append(
         DeclareLaunchArgument(
@@ -25,7 +24,6 @@ def generate_launch_description():
 
 
 def launch_setup(context, *args, **kwargs):
-
     launch_arguments = {
         "robot_ip": "xxx.yyy.zzz.www",
         "use_fake_hardware": "true",

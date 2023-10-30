@@ -10,7 +10,6 @@ from moveit_configs_utils import MoveItConfigsBuilder
 
 
 def generate_launch_description():
-
     # Command-line arguments
     ros2_control_hardware_type = DeclareLaunchArgument(
         "ros2_control_hardware_type",

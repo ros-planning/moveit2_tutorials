@@ -6,7 +6,6 @@ from ament_index_python.packages import get_package_share_directory
 
 
 def generate_launch_description():
-
     # Planning Scene ROS API Tutorial executable
     planning_scene_ros_api_tutorial = Node(
         name="planning_scene_ros_api_tutorial",

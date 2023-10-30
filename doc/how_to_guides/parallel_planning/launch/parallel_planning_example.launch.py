@@ -14,12 +14,13 @@ def load_yaml(package_name, file_path):
     try:
         with open(absolute_file_path, "r") as file:
             return yaml.safe_load(file)
-    except EnvironmentError:  # parent of IOError, OSError *and* WindowsError where available
+    except (
+        EnvironmentError
+    ):  # parent of IOError, OSError *and* WindowsError where available
         return None
 
 
 def generate_launch_description():
-
     declared_arguments = []
     declared_arguments.append(
         DeclareLaunchArgument(
@@ -35,7 +36,6 @@ def generate_launch_description():
 
 
 def launch_setup(context, *args, **kwargs):
-
     moveit_config = (
         MoveItConfigsBuilder("moveit_resources_panda")
         .robot_description(file_path="config/panda.urdf.xacro")
