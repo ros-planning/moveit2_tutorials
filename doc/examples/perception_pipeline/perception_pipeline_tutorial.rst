@@ -1,13 +1,8 @@
-:moveit1:
-
-..
-   Once updated for MoveIt 2, remove all lines above title (including this comment and :moveit1: tag)
-
 Perception Pipeline Tutorial
 ============================
 
 MoveIt allows for seamless integration of 3D sensors using `Octomap <http://octomap.github.io/>`_.
-Once properly configured, you should see something like this in rviz:
+Once properly configured, you should see something like this in RViz:
 
 .. image:: perception_configuration_demo.png
    :width: 700px
@@ -15,6 +10,15 @@ Once properly configured, you should see something like this in rviz:
 Getting Started
 ---------------
 If you haven't already done so, make sure you've completed the steps in :doc:`Getting Started </doc/tutorials/getting_started/getting_started>`.
+
+* NOTE-1: Particularly, use ``rolling`` for this tutorial as some dependencies may not be available in ``humble`` or earlier (explained in `moveit2_tutorials!700 <https://github.com/ros-planning/moveit2_tutorials/pull/700#issuecomment-1581411304>`_).
+* NOTE-2: As of June 2023, the tutorial code is based on unmerged software changes in the upstream repo. `moveit_resources!181 <https://github.com/ros-planning/moveit_resources/pull/181>`_. Before it's merged, you need to have its source and build by commands e.g. ::
+
+   cd ~/ws_moveit/src
+   git clone https://github.com/130s/moveit_resources.git -b feature-panda-moveit-perception
+   cd ~/ws_moveit
+   sudo apt update && rosdep install -r --from-paths . --ignore-src --rosdistro $ROS_DISTRO -y
+   colcon build --mixin release
 
 Configuration
 -------------
@@ -30,19 +34,36 @@ To use the Occupancy Map Updater, it is only necessary to set the appropriate pa
 YAML Configuration file (Point Cloud)
 +++++++++++++++++++++++++++++++++++++
 
-We will have to generate a YAML configuration file for configuring the 3D sensors. Please see :panda_codedir:`this example file<config/sensors_kinect_pointcloud.yaml>` for processing point clouds.
+We will have to generate a YAML configuration file for configuring the 3D sensors. Please see :moveit_resources_codedir:`this example file <panda_moveit_config/config/sensors_3d.yaml>` for processing point clouds.
 
-Save this file in the config folder in the robot's moveit_config package with name "sensors_kinect_pointcloud.yaml": ::
+Save this file in the config folder in the robot's moveit_config package with name "sensors_3d.yaml": ::
 
- sensors:
-   - sensor_plugin: occupancy_map_monitor/PointCloudOctomapUpdater
-     point_cloud_topic: /camera/depth_registered/points
-     max_range: 5.0
-     point_subsample: 1
-     padding_offset: 0.1
-     padding_scale: 1.0
-     max_update_rate: 1.0
-     filtered_cloud_topic: filtered_cloud
+  sensors:
+    - kinect_pointcloud
+  kinect_pointcloud:
+      filtered_cloud_topic: filtered_cloud
+      max_range: 5.0
+      max_update_rate: 1.0
+      ns: kinect
+      padding_offset: 0.1
+      padding_scale: 0.5
+      point_cloud_topic: /camera/depth_registered/points
+      point_subsample: 1
+      sensor_plugin: occupancy_map_monitor/PointCloudOctomapUpdater
+  kinect_depthimage:
+      far_clipping_plane_distance: 5.0
+      filtered_cloud_topic: filtered_cloud
+      image_topic: /camera/depth_registered/image_raw
+      max_update_rate: 1.0
+      near_clipping_plane_distance: 0.3
+      ns: kinect
+      padding_offset: 0.03
+      padding_scale: 4.0
+      queue_size: 5
+      sensor_plugin: occupancy_map_monitor/DepthImageOctomapUpdater
+      shadow_threshold: 0.2
+      skip_vertical_pixels: 4
+      skip_horizontal_pixels: 6
 
 **The general parameters are:**
 
@@ -57,30 +78,36 @@ Save this file in the config folder in the robot's moveit_config package with na
 
 * *point_subsample*: Choose one of every *point_subsample* points.
 
-* *padding_offset*: The size of the padding (in cm).
+* *padding_scale*: Should always be >= 1.0. Scale up collision shapes in the scene before excluding them from the octomap.
 
-* *padding_scale*: The scale of the padding.
+* *padding_offset*: Absolute padding (in m) around scaled collision shapes when excluding them from the octomap.
 
 * *filtered_cloud_topic*: The topic on which the filtered cloud will be published (mainly for debugging). The filtering cloud is the resultant cloud after self-filtering has been performed.
 
+* *ns*: An optional namespace for the advertised topics. Required for multiple sensors of the same type.
 
 YAML Configuration file (Depth Map)
 +++++++++++++++++++++++++++++++++++
 
-We will have to generate a YAML configuration file for configuring the 3D sensors. An :panda_codedir:`example file for processing depth images <config/sensors_kinect_depthmap.yaml>` can be found in the panda_moveit_config repository as well.
-Save this file in the config folder in the robot's moveit_config package with name "sensors_kinect_depthmap.yaml": ::
+We will have to generate a YAML configuration file for configuring the 3D sensors. An :moveit_resources_codedir:`example file for processing depth images <panda_moveit_config/config/sensors_3d.yaml>` can be found in the panda_moveit_config repository as well.
+Save this file in the config folder in the robot's moveit_config package with name "sensors_3d.yaml": ::
 
- sensors:
-   - sensor_plugin: occupancy_map_monitor/DepthImageOctomapUpdater
-     image_topic: /camera/depth_registered/image_raw
-     queue_size: 5
-     near_clipping_plane_distance: 0.3
-     far_clipping_plane_distance: 5.0
-     shadow_threshold: 0.2
-     padding_scale: 4.0
-     padding_offset: 0.03
-     max_update_rate: 1.0
-     filtered_cloud_topic: filtered_cloud
+  sensors:
+    - kinect_depthimage
+  kinect_depthimage:
+      far_clipping_plane_distance: 5.0
+      filtered_cloud_topic: filtered_cloud
+      image_topic: /camera/depth_registered/image_raw
+      max_update_rate: 1.0
+      near_clipping_plane_distance: 0.3
+      ns: kinect
+      padding_offset: 0.03
+      padding_scale: 4.0
+      queue_size: 5
+      sensor_plugin: occupancy_map_monitor/DepthImageOctomapUpdater
+      shadow_threshold: 0.2
+      skip_vertical_pixels: 4
+      skip_horizontal_pixels: 6
 
 **The general parameters are:**
 
@@ -99,33 +126,55 @@ Save this file in the config folder in the robot's moveit_config package with na
 
 * *shadow_threshold*: The minimum brightness of the shadow map below an entity for its dynamic shadow to be visible
 
-* *padding_offset*: The size of the padding (in cm).
+* *padding_scale*: Should always be >= 1.0. Scale up collision shapes in the scene before excluding them from the octomap.
 
-* *padding_scale*: The scale of the padding.
+* *padding_offset*: Absolute padding (in m) around scaled collision shapes when excluding them from the octomap.
 
 * *filtered_cloud_topic*: The topic on which the filtered cloud will be published (mainly for debugging). The filtering cloud is the resultant cloud after self-filtering has been performed.
 
+* *ns*: An optional namespace for the advertised topics. Required for multiple sensors of the same type.
 
 Update the launch file
 ++++++++++++++++++++++
 
 Add the YAML file to the launch script
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-You will now need to update the *sensor_manager.launch* file in the "launch" directory of your panda_moveit_config directory with this sensor information (this file is auto-generated by the Setup Assistant but is empty). You will need to add the following line into that file to configure the set of sensor sources for MoveIt to use: ::
+You will now need to create a *sensor_manager.launch* file in the "launch" directory of your ``panda_moveit_config`` directory with this sensor information, which is already done for you for convenience under :moveit_resources_codedir:`moveit_resources/panda_moveit_config <panda_moveit_config/config/sensor_manager.launch.xml>`.
 
- <rosparam command="load" file="$(find panda_moveit_config)/config/sensors_kinect_pointcloud.yaml" />
+You will need ``sensors_3d.yaml`` to be read by your application. :moveit_resources_codedir:`In panda_moveit_config/launch/demo.launch.py <panda_moveit_config/launch/demo.launch.py>` the file is already read like the following (It's convoluted, you should use ``demo.launch.py`` from ``moveit_resources`` repo unless you know what this piece of code does.): ::
 
-If you are using depthmap change the name of the yaml file to ``sensors_kinect_depthmap.yaml``.
+   from moveit_configs_utils import MoveItConfigsBuilder
+   :
+   moveit_config = (
+        MoveItConfigsBuilder("moveit_resources_panda")
+        .robot_description(
+            file_path="config/panda.urdf.xacro",
+            mappings={
+                "ros2_control_hardware_type": LaunchConfiguration(
+                    "ros2_control_hardware_type"
+                )
+            },
+        )
+        .robot_description_semantic(file_path="config/panda.srdf")
+        .trajectory_execution(file_path="config/gripper_moveit_controllers.yaml")
+        .planning_pipelines(
+            pipelines=["ompl", "chomp", "pilz_industrial_motion_planner", "stomp"])
+        .sensors_3d("config/sensors_3d.yaml")
+        .to_moveit_configs()
+   )
+
 Note that you will need to input the path to the right file you have created above.
 
 Octomap Configuration
 ^^^^^^^^^^^^^^^^^^^^^
-You will also need to configure the `Octomap <http://octomap.github.io/>`_ by adding the following lines into the *sensor_manager.launch*: ::
+You will also need to configure the `Octomap <http://octomap.github.io/>`_. :moveit_resources_codedir:`In the pre-made example (panda_moveit_config/launch/demo.launch.py) <panda_moveit_config/launch/demo.launch.py>` the following does the job: ::
 
- <param name="octomap_frame" type="string" value="odom_combined" />
- <param name="octomap_resolution" type="double" value="0.05" />
- <param name="max_range" type="double" value="5.0" />
-
+   def _octomap_launch_params(params: ParameterBuilder):
+       params.parameter("octomap_frame", "camera_rgb_optical_frame")
+       params.parameter("octomap_resolution", 0.05)
+       params.parameter("max_range", 5.0)
+       return params.to_dict()
+ 
 MoveIt uses an octree-based framework to represent the world around it. The *Octomap* parameters above are configuration parameters for this representation:
  * *octomap_frame*: specifies the coordinate frame in which this representation will be stored. If you are working with a mobile robot, this frame should be a fixed frame in the world.
  * *octomap_resolution*: specifies the resolution at which this representation is maintained (in meters).
@@ -139,18 +188,29 @@ If you set the initial and the final location of the robot in a way that there i
 .. image:: obstacle_avoidance.gif
    :width: 700px
 
+Before running the software
++++++++++++++++++++++++++++
+This tutorial uses ``moveit2_tutorials`` that depends on ``moveit_task_constructor``, whose installer has not yet been available in ros2 yet (progress tracked in `moveit_task_constructor#400 <https://github.com/ros-planning/moveit_task_constructor/issues/400>`_) so you need to get it via source code. Move into your colcon workspace and pull the MoveIt Task Constructor source: ::
+
+    cd ~/ws_moveit/src
+    git clone git@github.com:ros-planning/moveit_task_constructor.git -b ros2
+    cd ~/ws_moveit
+    colcon build --mixin release
+    source ~/ws_moveit/install/setup.bash
+
 Running the Interface
 +++++++++++++++++++++
-Roslaunch the launch file to run the code directly from moveit_tutorials: ::
 
- roslaunch moveit_tutorials obstacle_avoidance_demo.launch
+Launch the prepared launch file in moveit_tutorials to see the planning scene integrating sample point cloud data into an octomap: ::
+
+ ros2 launch moveit_tutorials obstacle_avoidance_demo.launch
 
 You should see something like the image shown at the beginning of this tutorial.
 If not, you may have run into a `known OpenGL rendering issue <http://wiki.ros.org/rviz/Troubleshooting>`_. To work around the issue, you can force CPU-based rendering with this command:
 
  export LIBGL_ALWAYS_SOFTWARE=1
 
-You can test obstacle avoidance for yourself by setting the goal state manually and then planning and executing. To learn how to do that look at :doc:`MoveIt Quickstart in RViz </doc/tutorials/quickstart_in_rviz/quickstart_in_rviz_tutorial>`
+You can test obstacle avoidance with the generated octomap for yourself by setting the goal state manually and then planning and executing. To learn how to do that look at `MoveIt Quickstart in RViz </doc/tutorials/quickstart_in_rviz/quickstart_in_rviz_tutorial>`_
 
 Detecting and Adding Object as Collision Object
 -----------------------------------------------
@@ -158,30 +218,23 @@ Detecting and Adding Object as Collision Object
 In this section, we will demonstrate an example of extracting a cylinder from a pointcloud, computing relevant values and adding it as a collision object to the planning scene.
 We will be working with point clouds but it can be implemented similarly with depth maps.
 
-After running the code, you should be able to see something like this in rviz:
+After running the code, you should be able to see something like this in RViz:
 
 .. image:: cylinder_collision_object.png
    :width: 700px
 
 Running the Code
 ++++++++++++++++
-Roslaunch the launch file to run the code directly from moveit_tutorials: ::
 
- roslaunch moveit_tutorials detect_and_add_cylinder_collision_object_demo.launch
+Keep the launch file from above running and run the code directly from moveit_tutorials: ::
 
-KNOWN ISSUE - You may see the following error when running the demo ::
-
-  ros.moveit_ros_planning.planning_scene_monitor: Transform error: Lookup would require extrapolation into the future.  Requested time 1527473962.793050157 but the latest data is at time 1527473962.776993978, when looking up transform from frame [panda_link2] to frame [camera_rgb_optical_frame]
-  ros.moveit_ros_perception: Transform cache was not updated. Self-filtering may fail.
-
-We are working on fixing it, it should not break the working of the demo.
-You can follow its status in the `issue tracker <https://github.com/ros-planning/moveit_tutorials/issues/192>`_
+  ros2 run moveit2_tutorials detect_and_add_cylinder_collision_object_demo
 
 Relevant Code
 +++++++++++++
-The entire code can be seen :codedir:`here<examples/perception_pipeline>` in the moveit_tutorials GitHub project.
+The entire code can be seen :codedir:`here <examples/perception_pipeline>` in the moveit_tutorials GitHub project.
 
-The details regarding the implementation of each of the perception pipeline function have been omitted in this tutorial as they are well documented `here <http://wiki.ros.org/pcl/Tutorials>`_.
+The details regarding the implementation of each of the perception pipeline function have been omitted in this tutorial as they are well documented on `ros1 wiki <http://wiki.ros.org/pcl/Tutorials>`_.
 
 .. |br| raw:: html
 
@@ -195,4 +248,4 @@ The details regarding the implementation of each of the perception pipeline func
 
    </code>
 
-.. tutorial-formatter:: ./src/cylinder_segment.cpp
+.. tutorial-formatter:: ./src/detect_and_add_cylinder_collision_object_demo.cpp

@@ -1,0 +1,27 @@
+rosbag2_bagfile_information:
+  compression_format: ''
+  compression_mode: ''
+  custom_data: {}
+  duration:
+    nanoseconds: 0
+  files:
+  - duration:
+      nanoseconds: 0
+    message_count: 1
+    path: perception_tutorial.db3
+    starting_time:
+      nanoseconds_since_epoch: 1530016169214859695
+  message_count: 1
+  relative_file_paths:
+  - perception_tutorial.db3
+  starting_time:
+    nanoseconds_since_epoch: 1530016169214859695
+  storage_identifier: sqlite3
+  topics_with_message_count:
+  - message_count: 1
+    topic_metadata:
+      name: /camera/depth_registered/points
+      offered_qos_profiles: ''
+      serialization_format: cdr
+      type: sensor_msgs/msg/PointCloud2
+  version: 6

@@ -1,0 +1,23 @@
+<launch>
+  <arg name="bagfile" default="$(find-pkg-share moveit2_tutorials)/bags/perception_tutorial.bag" />
+  <arg name="launchfile_panda"
+       default="$(find-pkg-share moveit_resources_panda_moveit_config)/launch/demo.launch.py" />
+  <!--
+  In this tutorial we wait much longer for the robot transforms than we usually would,
+  because the user's machine might be quite slow.
+  Arg name is shortened although the final lengthy Param name is: 'robot_description_planning/shape_transform_cache_lookup_wait_tim'
+  -->
+  <arg name="shape_transform_cache_lookup_wait_time"
+       default="0.5" />
+
+  <!-- Play the rosbag that contains the pointcloud data -->
+  <executable cmd="ros2 bag play -l --clock 10.0 $(var bagfile)" output="screen" />
+
+  <include file="$(var launchfile_panda)">
+    <arg name="shape_transform_cache_lookup_wait_time" value="$(var shape_transform_cache_lookup_wait_time)" />
+    <arg name="rviz_tutorial" value="false" />
+  </include>
+
+  <!-- If needed, broadcast static tf for robot root -->  
+  <node pkg="tf2_ros" exec="static_transform_publisher" name="to_camera" args="0.00 -.40 0.60 0.19 0.07 -1.91 world camera_rgb_optical_frame" />
+</launch>

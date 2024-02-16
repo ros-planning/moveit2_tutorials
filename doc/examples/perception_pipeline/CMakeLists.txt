@@ -1,13 +1,23 @@
-add_executable(cylinder_segment src/cylinder_segment.cpp)
-target_link_libraries(cylinder_segment ${catkin_LIBRARIES})
+find_package(PCL REQUIRED)
+set(SUBTUTORIAL_DEPENDS
+  geometry_msgs
+  pcl_conversions
+  pcl_ros
+  sensor_msgs
+)
+foreach(dep IN ITEMS ${SUBTUTORIAL_DEPENDS})
+  find_package(${dep} REQUIRED)
+endforeach()
 
-add_executable(bag_publisher_maintain_time src/bag_publisher_maintain_time.cpp)
-target_link_libraries(bag_publisher_maintain_time ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+include_directories(include ${PCL_INCLUDE_DIRS})
 
-install(
-TARGETS
-    bag_publisher_maintain_time
-    cylinder_segment
-DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+set(APP_CYLINDER detect_and_add_cylinder_collision_object_demo)
+add_executable(${APP_CYLINDER} src/detect_and_add_cylinder_collision_object_demo.cpp)
+ament_target_dependencies(${APP_CYLINDER}
+  ${SUBTUTORIAL_DEPENDS}
+  ${THIS_PACKAGE_INCLUDE_DEPENDS})
+install(TARGETS ${APP_CYLINDER} RUNTIME DESTINATION lib/${PROJECT_NAME})
 
-install(DIRECTORY launch DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
+install(DIRECTORY bags launch
+    DESTINATION share/${PROJECT_NAME}
+)
