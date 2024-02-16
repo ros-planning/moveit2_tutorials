@@ -21,12 +21,12 @@ jobs:
       matrix:
         env:
           - IMAGE: rolling-source
+          - IMAGE: rolling-release
 
     env:
       DOCKER_IMAGE: moveit/moveit2:${{ matrix.env.IMAGE }}
       UPSTREAM_WORKSPACE: .github/upstream.repos
       AFTER_SETUP_UPSTREAM_WORKSPACE: vcs pull $BASEDIR/upstream_ws/src
-      AFTER_SETUP_UPSTREAM_WORKSPACE_EMBED: set +u && source ~/ws_moveit/install/setup.bash && set - u
       TARGET_CMAKE_ARGS: -DCMAKE_BUILD_TYPE=Release
       CCACHE_DIR: ${{ github.workspace }}/.ccache
       BASEDIR: ${{ github.workspace }}/.work
