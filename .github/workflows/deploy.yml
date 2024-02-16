@@ -109,7 +109,7 @@ jobs:
 
     # TODO (peterdavidfagan): don't hardcode branches for downloads
     - name: Download Rolling Artifacts
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: main_html_artifacts
         path: .
@@ -121,7 +121,7 @@ jobs:
         rm artifact.tar.gz
 
     - name: Download Humble Artifacts
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: humble_html_artifacts
         path: .
