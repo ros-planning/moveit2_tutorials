@@ -56,10 +56,6 @@ int main(int argc, char** argv)
   std::shared_ptr<rclcpp::Node> motion_planning_api_tutorial_node =
       rclcpp::Node::make_shared("motion_planning_api_tutorial", node_options);
 
-  rclcpp::executors::SingleThreadedExecutor executor;
-  executor.add_node(motion_planning_api_tutorial_node);
-  std::thread([&executor]() { executor.spin(); }).detach();
-
   // BEGIN_TUTORIAL
   // Start
   // ^^^^^
@@ -79,6 +75,12 @@ int main(int argc, char** argv)
   /* Create a RobotState and JointModelGroup to keep track of the current robot pose and planning group*/
   moveit::core::RobotStatePtr robot_state(new moveit::core::RobotState(robot_model));
   const moveit::core::JointModelGroup* joint_model_group = robot_state->getJointModelGroup(PLANNING_GROUP);
+
+  // We spin up a SingleThreadedExecutor for the current state monitor to get information
+  // about the robot's state.
+  rclcpp::executors::SingleThreadedExecutor executor;
+  executor.add_node(motion_planning_api_tutorial_node);
+  std::thread([&executor]() { executor.spin(); }).detach();
 
   // Using the
   // :moveit_codedir:`RobotModel<moveit_core/robot_model/include/moveit/robot_model/robot_model.h>`,

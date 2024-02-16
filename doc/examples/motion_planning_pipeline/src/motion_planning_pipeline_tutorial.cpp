@@ -56,10 +56,6 @@ int main(int argc, char** argv)
   node_options.automatically_declare_parameters_from_overrides(true);
   auto node = rclcpp::Node::make_shared("motion_planning_pipeline_tutorial", node_options);
 
-  rclcpp::executors::SingleThreadedExecutor executor;
-  executor.add_node(node);
-  std::thread([&executor]() { executor.spin(); }).detach();
-
   // BEGIN_TUTORIAL
   // Start
   // ^^^^^
@@ -104,6 +100,12 @@ int main(int argc, char** argv)
   /* Create a JointModelGroup to keep track of the current robot pose and planning group. The Joint Model
      group is useful for dealing with one set of joints at a time such as a left arm or a end effector */
   const moveit::core::JointModelGroup* joint_model_group = robot_state->getJointModelGroup("panda_arm");
+
+  // We spin up a SingleThreadedExecutor for the current state monitor to get information
+  // about the robot's state.
+  rclcpp::executors::SingleThreadedExecutor executor;
+  executor.add_node(node);
+  std::thread([&executor]() { executor.spin(); }).detach();
 
   // We can now setup the PlanningPipeline object, which will use the ROS parameter server
   // to determine the set of request adapters and the planning plugin to use
