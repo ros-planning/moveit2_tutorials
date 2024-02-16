@@ -73,8 +73,8 @@ For all demos you should launch the basic environment: ::
 
 Subsequently, you can run the individual demos: ::
 
-  ros2 run moveit_task_constructor_demo cartesian.launch.py
-  ros2 run moveit_task_constructor_demo modular.launch.py
+  ros2 launch moveit_task_constructor_demo cartesian.launch.py
+  ros2 launch moveit_task_constructor_demo modular.launch.py
   ros2 launch moveit_task_constructor_demo pickplace.launch.py
 
 On the right side you should see the **Motion Planning Tasks** panel outlining the hierarchical stage structure of the tasks.
