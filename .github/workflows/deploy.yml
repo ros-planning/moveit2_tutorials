@@ -77,7 +77,7 @@ jobs:
       run: tar cvzf artifact.tar.gz --directory=build/html .
 
     - name: Upload HTML Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: '${{ matrix.branch }}_html_artifacts'
         path: artifact.tar.gz
