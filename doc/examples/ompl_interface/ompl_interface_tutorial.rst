@@ -99,7 +99,32 @@ The configuration of these optimization objectives can be done in the *ompl_plan
         goal_bias: 0.05
         delay_collision_checking: 1
 
-Other optimization objectives can be defined programmatically. For more information on the OMPL optimal planners, the reader is referred to the `OMPL - Optimal Planning documentation <http://ompl.kavrakilab.org/optimalPlanning.html>`_.
+Other optimization objectives can be defined programmatically and then passed to MoveIt.
+
+To do so, a minimal setup is as follows :
+
+#. In your own package, create your own optimization objective class for OMPL. For more information on the OMPL optimal planners, the reader is referred to the `OMPL - Optimal Planning documentation <http://ompl.kavrakilab.org/optimalPlanning.html>`_.
+
+#. In your .cpp file, include ``"moveit/ompl_interface/ompl_optimization_objective_loader.h"`` and add, at the end, the macro ``MOVEIT_OPTIMIZATION_OBJECTIVE_PLUGIN(namespace, class_name)``, with the right namespace and class name you used.
+
+#. Create a plugin description file .xml containing the following : ::
+
+    <library path="package_name">
+    <class name="custom_objective"
+           type="namespace::class_nameLoader"
+           base_class_type="ompl_optimization_loader::OptimizationObjectiveLoader">
+        <description> </description>
+    </class>
+    </library>
+
+   The ``name`` tag will the name to pass the parameter **optimization_objective**.
+
+   The ``type`` tag is the fully qualified type of the plugin, be sure to add ``Loader`` at the end of the tag type.
+
+   The ``base_class_type`` is the fully qualified base class type for the plugin and does not need to be modified.
+
+#. Export the plugin description file in the CMakeLists.txt of your package with ``pluginlib_export_plugin_description_file(plugin_description.xml)``
+
 
 OMPL Planner Termination Conditions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
