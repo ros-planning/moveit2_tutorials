@@ -1,0 +1,7 @@
+# Source: https://github.com/ros-planning/moveit_resources/blob/3d6a737f95fb7e5f3cfdc306d12b0bb6cbdadfb2/panda_moveit_config/config/pilz_cartesian_limits.yaml
+# Cartesian limits for the Pilz planner
+cartesian_limits:
+  max_trans_vel: 1.0
+  max_trans_acc: 2.25
+  max_trans_dec: -5.0
+  max_rot_vel: 1.57
