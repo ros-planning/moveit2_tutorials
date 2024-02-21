@@ -15,3 +15,7 @@ repositories:
     type: git
     url: https://github.com/PickNikRobotics/rosparam_shortcuts
     version: ros2
+  moveit2:
+    type: git
+    url: https://github.com/ros-planning/moveit2.git
+    version: 2.5.2

@@ -103,6 +103,41 @@ Servo includes a number of nice features:
     5. Joint position and velocity limits enforced
     6. Inputs are generic ROS messages
 
+Inverse Kinematics in Servo
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Inverse Kinematics may be handled internally by MoveIt Servo via inverse Jacobian calculations. However, you may also use an IK plugin.
+To configure an IK plugin for use in Servo, your robot config package must define one in a :code:`kinematics.yaml` file, such as the one
+in the `Panda config package <https://github.com/ros-planning/moveit_resources/blob/master/panda_moveit_config/config/kinematics.yaml>`_.
+Several IK plugins are available `within MoveIt <https://github.com/ros-planning/moveit2/tree/main/moveit_kinematics>`_,
+as well as `externally <https://github.com/PickNikRobotics/bio_ik/tree/ros2>`_.
+:code:`bio_ik/BioIKKinematicsPlugin` is the most common choice.
+
+Once your :code:`kinematics.yaml` file has been populated, include it with the ROS parameters passed to the servo node in your launch file:
+
+.. code-block:: python
+
+    moveit_config = (
+        MoveItConfigsBuilder("moveit_resources_panda")
+        .robot_description(file_path="config/panda.urdf.xacro")
+        .to_moveit_configs()
+    )
+    servo_node = Node(
+        package="moveit_servo",
+        executable="servo_node_main",
+        parameters=[
+            servo_params,
+            moveit_config.robot_description,
+            moveit_config.robot_description_semantic,
+            moveit_config.robot_description_kinematics, # here is where kinematics plugin parameters are passed
+        ],
+    )
+
+
+The above excerpt is taken from `servo_example.launch.py <https://github.com/ros-planning/moveit2/blob/main/moveit_ros/moveit_servo/launch/servo_example.launch.py>`_ in MoveIt.
+In the above example, the :code:`kinematics.yaml` file is taken from the `moveit_resources <https://github.com/ros-planning/moveit_resources>`_ repository in the workspace, specifically :code:`moveit_resources/panda_moveit_config/config/kinematics.yaml`.
+The actual ROS parameter names that get passed by loading the yaml file are of the form :code:`robot_description_kinematics.<group_name>.<param_name>`, e.g. :code:`robot_description_kinematics.panda_arm.kinematics_solver`.
+
 Setup on a New Robot
 --------------------
 
