@@ -89,7 +89,7 @@ This build command will likely take a long time (20+ minutes) depending on your 
 .. warning::
   Some of the packages built with this command require up to 16Gb of RAM to build. By default, ``colcon``  tries to build as many packages as possible at the same time.
   If you are low on computer memory, or if the build is generally having trouble completing on your computer,
-  you can try appending ``--executor sequential`` to the ``colcon`` command above to build only one package at a time, or ``--parallel-workers <X>`` to limit the number of simultaneous builds.
+  you can try appending ``--executor sequential`` to the ``colcon`` command above to build only one package at a time, or ``--parallel-workers <X>`` to limit the number of simultaneous builds. For even more limited machines, you can try running ``MAKEFLAGS="-j4 -l1" colcon build --executor sequential``.
 
 If everything goes well, you should see the message "Summary: X packages finished" where X might be 50. If you have problems, try re-checking your `ROS Installation <https://docs.ros.org/en/rolling/Installation.html>`_.
 
